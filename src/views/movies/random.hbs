@@ -2,6 +2,7 @@
 {{#extend "body"}}
 <main>
     <h1>Picking Random Movie</h1>
+    <h2></h2>
 </main>
 {{/extend}}
 {{#extend "js"}}
@@ -20,9 +21,14 @@
                     movies.list = response;
                     let unwatched = movies.list.filter(movie => movie.watched == 0)
                     unwatched = unwatched[Math.floor(Math.random() * unwatched.length)];
-                    const el = document.querySelector('h1')
-                    const fx = new TextScramble(el);
-                    setTimeout(() => { fx.setText(unwatched.title) }, 1000);
+
+                    const title = document.querySelector('h1');
+                    const titleFX = new TextScramble(title);
+
+                    const streaming = document.querySelector('h2');
+                    const streamingFX = new TextScramble(streaming);
+                    setTimeout(() => { titleFX.setText(unwatched.title) }, 1000);
+                    setTimeout(() => { streamingFX.setText(`Streaming on : ${unwatched.streaming_service}`) }, 2000)
                 })
                 .catch(error => console.error('Error:', error));
         },
