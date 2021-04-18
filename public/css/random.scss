@@ -1,0 +1,19 @@
+#random {
+    background: #212121;
+    main {
+        display: grid;
+
+        width: 100vw;
+        height: 100vh;
+
+        place-items: center;
+        h1 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 28px;
+            font-weight: 100;
+
+            color: #fff;
+            color: #fafafa;
+        }
+    }
+}

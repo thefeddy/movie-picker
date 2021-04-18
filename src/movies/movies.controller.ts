@@ -15,6 +15,13 @@ export class MoviesController {
 
     }
 
+    @Get('/random')
+    @Render('movies/random')
+    async random(@Res() res: Response): Promise<any> {
+
+    }
+
+
     @Post('/add')
     async create(@Body() moviePayload: CreateMovieDTO): Promise<any> {
         const movie = await this.movieService.add(moviePayload);

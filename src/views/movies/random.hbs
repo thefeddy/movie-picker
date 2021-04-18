@@ -1,0 +1,33 @@
+{{#extend "body_id"}}id="random"{{/extend}}
+{{#extend "body"}}
+<main>
+    <h1>Picking Random Movie</h1>
+</main>
+{{/extend}}
+{{#extend "js"}}
+<script src="js/text-scramble.js"></script>
+<script>
+    const movies = {
+        list: [],
+        init: () => {
+            movies.getList();
+        },
+        getList: () => {
+            fetch(`/list/`, {
+                method: 'GET'
+            }).then(res => res.json())
+                .then((response) => {
+                    movies.list = response;
+                    let unwatched = movies.list.filter(movie => movie.watched == 0)
+                    unwatched = unwatched[Math.floor(Math.random() * unwatched.length)];
+                    const el = document.querySelector('h1')
+                    const fx = new TextScramble(el);
+                    setTimeout(() => { fx.setText(unwatched.title) }, 1000);
+                })
+                .catch(error => console.error('Error:', error));
+        },
+    }
+
+    movies.init();
+</script>
+{{/extend}}
