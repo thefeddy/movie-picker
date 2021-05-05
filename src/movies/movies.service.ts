@@ -25,12 +25,12 @@ export class MovieService {
     }
 
     async add(movie: CreateMovieDTO): Promise<Movies> {
-        const { title } = movie;
-        const maps = await this.movieRepository.findOne({
-            where: { title },
+        const { movie_id } = movie;
+        const movies = await this.movieRepository.findOne({
+            where: { movie_id },
         });
 
-        if (maps) {
+        if (movies) {
             throw new HttpException('Movie already added', HttpStatus.FOUND);
         }
 

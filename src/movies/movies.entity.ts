@@ -16,29 +16,12 @@ export class Movies {
     id: number;
 
     @Column({
-        name: 'title',
-        type: 'varchar',
-        nullable: true,
-        length: 50
-    })
-    title: string;
-
-    @Column({
-        name: 'trailer_url',
+        name: 'movie_id',
         type: 'varchar',
         nullable: true,
         length: 255
     })
-    trailer_url: string;
-
-    @Column({
-        name: 'streaming_service',
-        type: 'varchar',
-        nullable: true,
-        length: 255
-    })
-    streaming_service: string;
-
+    movie_id: string;
 
     @Column({
         name: 'watched',
@@ -49,13 +32,11 @@ export class Movies {
     watched: number;
 
     toResponseObject(): MoviesRO {
-        const { id, title, trailer_url, streaming_service, watched } = this;
+        const { id, movie_id, watched } = this;
 
         const responseObject: MoviesRO = {
             id,
-            title,
-            trailer_url,
-            streaming_service,
+            movie_id,
             watched
         };
 

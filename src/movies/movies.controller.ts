@@ -15,10 +15,25 @@ export class MoviesController {
 
     }
 
+    @Get('/search/:search')
+    @Render('movies/search')
+    async search(@Param('search') search: string, @Res() res: Response): Promise<any> {
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`;
+        const movies = await this.http.get(url).toPromise();
+        console.log(movies.data)
+        return { movies: movies.data, search: search };
+    }
+
+    @Get('/admin')
+    @Render('movies/admin')
+    async admin(@Res() res: Response): Promise<any> {
+
+    }
+
     @Get('/random')
     @Render('movies/random')
     async random(@Res() res: Response): Promise<any> {
-
+        return { api_key: process.env.TMDB_API_KEY }
     }
 
     @Get('/movies')
@@ -33,7 +48,6 @@ export class MoviesController {
         const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&&language=en-US`).toPromise();
         const movie = { ...response.data, ...trailer.data.results[0] };
-        console.log(movie);
         return { movie };
     }
 

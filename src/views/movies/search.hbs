@@ -1,0 +1,58 @@
+{{#extend "body_id"}}
+id="search"
+{{/extend}}
+{{#extend "body_id"}}
+class="results"
+{{/extend}}
+{{#extend "body"}}
+
+<div id="movies">
+    <div class="container">
+        <div class="row">
+            <h1>Search Results for <span>{{ search }}</span></h1>
+        </div>
+        <div class="row">
+            {{#each movies.results}}
+            <div class="col-3 movie">
+                <div class="details">
+                    <a href="/movie/{{ this.id }}"><i class="fal fa-info-circle"></i></a>
+                    <a href="#" data-id="{{ this.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                </div>
+                <img src="https://image.tmdb.org/t/p/w500/{{ this.poster_path }}" />
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+{{/extend}}
+
+{{#extend "js"}}
+<script>
+    const movies = {
+        add: (id) => {
+            const data = {
+                movie_id: id,
+                watched: 0
+            };
+            console.log(data)
+            fetch(`/add/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+
+            }).then(res => res.json())
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(error => console.error('Error:', error));
+        },
+    }
+
+    document.querySelectorAll('.add').forEach(add => add.addEventListener('click', (event) => {
+        let id = event.currentTarget.getAttribute('data-id');
+        movies.add(id);
+    }));
+</script>
+{{/extend}}

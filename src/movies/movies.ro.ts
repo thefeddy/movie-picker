@@ -1,7 +1,5 @@
 export class MoviesRO {
     id: number;
-    title: string;
-    trailer_url: string;
-    streaming_service: string;
+    movie_id: string;
     watched: number;
 }

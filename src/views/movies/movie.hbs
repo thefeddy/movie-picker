@@ -1,6 +1,10 @@
 {{#extend "body_class"}}
-
 {{/extend}}
+
+{{#extend "title"}}
+{{ movie.title }} ||
+{{/extend}}
+
 {{#extend "body"}}
 <main>
     <div class="container">
@@ -12,14 +16,46 @@
                 <p>{{ movie.overview }}</p>
                 <a href="{{ movie.homepage }}" target="_blank"> {{ movie.homepage }}</a>
             </div>
+            <div class="col-12">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+            <a href="#" data-id="{{ movie.id }}" class="add">Add<i class="fal fa-plus-circle"></i></a>
         </div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key}}" title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
+
+
     </div>
 </main>
 {{/extend}}
 
 {{#extend "js"}}
+<script>
+    const movies = {
+        add: (id) => {
+            const data = {
+                movie_id: id,
+                watched: 0
+            };
+            fetch(`/add/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+
+            }).then(res => res.json())
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(error => console.error('Error:', error));
+        },
+    }
+
+    document.querySelector('.add').addEventListener('click', (event) => {
+        let id = event.currentTarget.getAttribute('data-id');
+        movies.add(id);
+    });
+</script>
 {{/extend}}

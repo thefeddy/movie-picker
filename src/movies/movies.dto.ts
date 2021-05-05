@@ -1,18 +1,17 @@
 export class MoviesDTO {
     readonly id: number;
-    readonly title: string;
-    readonly trailer_url: string;
-    readonly streaming_service: string;
+    readonly movie_id: string;
     readonly watched: number;
 }
 
 export class CreateMovieDTO {
-    readonly title: string;
-    readonly trailer_url: string;
-    readonly streaming_service: string;
+    readonly id: number;
+    readonly movie_id: string;
+    readonly watched: number;
 }
 
 export class WatchedMovieDTO {
     readonly id: number;
+    readonly movie_id: number;
     readonly watched: number;
 }

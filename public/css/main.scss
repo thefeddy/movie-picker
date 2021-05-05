@@ -17,8 +17,13 @@
 @import 'bootstrap/bootstrap';
 
 @import 'fonts';
+@import 'nav';
+@import 'global';
 
+// Pages
 @import 'random';
 
 
 @import 'movies';
+
+@import 'search';

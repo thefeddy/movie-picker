@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Movie Picker</title>
+    <title>{{{block "title"}}} Movie Picker</title>
     <link href="/css/main.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;700;900&display=swap"
@@ -12,8 +12,13 @@
 </head>
 
 <body {{{block "body_id" }}} {{{block "body_class" }}}>
-
-    {{{block "body"}}}
+    <nav>
+        <a href="/">Find a Movie</a>
+        <a href="/movies">Selected Movies</a>
+    </nav>
+    <main>
+        {{{block "body"}}}
+    </main>
     {{{block "js"}}}
 
 </body>

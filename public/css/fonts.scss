@@ -7,6 +7,15 @@ $fa-font-path: '/fonts/fontawesome';
 @import 'fontawesome/light';
 @import 'fontawesome/brands';
 
-@import 'https://fonts.googleapis.com/css?family=Roboto+Mono:100';
+
+@font-face {
+    font-family: 'Letterboard';
+    font-weight: normal;
+    font-style: normal;
+
+    font-display: swap;
+    src: url('../fonts/letterboard/letterboard.woff2') format('woff2'),;
+}
+
 
 

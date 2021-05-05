@@ -1,0 +1,27 @@
+nav {
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    padding: 20px 0;
+
+    text-align: right;
+    a {
+        font-family: 'Letterboard';
+        font-size: 20px;
+        font-weight: 700;
+
+        margin-right: 25px;
+
+        transition: opacity 550ms ease-in-out;
+        text-decoration: none;
+        letter-spacing: 2px;
+
+        opacity: 0.80;
+        color: #fff;
+        &:hover {
+            opacity: 1;
+            color: #fff;
+        }
+    }
+}

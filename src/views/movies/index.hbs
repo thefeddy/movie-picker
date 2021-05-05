@@ -1,182 +1,36 @@
-{{#extend "body_class"}}
-class="gray-bg"
+{{#extend "body_id"}}
+id="search"
 {{/extend}}
 {{#extend "body"}}
-<main>
-
-    <div class="container">
-        <div class="row">
-            <h1>Movies</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Trailer</th>
-                        <th scope="col">Streaming Service</th>
-                        <th scope="col">Watched?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            <h2>Add Movie</h2>
-            <form id="add-movie">
-                <div class="row">
-                    <div class="col-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
-                            </div>
-                            <input type="text" class="form-control" name="title">
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Trailer URL</span>
-                            </div>
-                            <input type="text" class="form-control" name="trailer_url">
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Streaming Service</span>
-                            </div>
-                            <input type="text" class="form-control" name="streaming_service">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-primary" type="submit">Add</button>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-
-        <div class="row">
-            <h3>Pick a Movie</h3>
-            <div class="picked"></div>
-            <div class="col-1">
-                <button class="btn btn-dark" id="pick">Pick</button>
-            </div>
-        </div>
-    </div>
-
-
-</main>
+<h1>Search for Movie</h1>
+<div class="search">
+    <form action="/search/">
+        <i class="fal fa-search"></i>
+        <input type="text">
+        <i class="fal fa-times"></i>
+    </form>
+</div>
 {{/extend}}
 
 {{#extend "js"}}
 <script>
-    const movies = {
-        list: [],
-        init: () => {
-            document.getElementById('add-movie').addEventListener('submit', (event) => {
-                event.preventDefault();
-                movies.onSubmit();
-            });
-
-            document.getElementById('pick').addEventListener('click', () => {
-                let unwatched = movies.list.filter(movie => movie.watched == 0)
-                unwatched = unwatched[Math.floor(Math.random() * unwatched.length)];
-                console.log(unwatched);
-                document.querySelector('.picked').innerHTML = unwatched.title;
-            });
-
-            movies.getList();
-
-        },
-        getList: () => {
-            fetch(`/list/`, {
-                method: 'GET'
-            }).then(res => res.json())
-                .then((response) => {
-                    movies.list = response;
-                    for (const movie of response) {
-                        let movieHTML = movies.html(movie);
-                        document.querySelector('table tbody').insertAdjacentHTML('beforeend', movieHTML);
-                    }
-
-                    document.querySelectorAll('input[type="checkbox"]').forEach((input) => {
-                        console.log(input)
-                        input.addEventListener('click', () => {
-                            const id = input.getAttribute('data-id');
-                            const title = movies.list.find(movie => movie.id == id).title;
-                            const streaming_service = movies.list.find(movie => movie.id == id).streaming_service;
-                            const trailer_url = movies.list.find(movie => movie.id == id).trailer_url;
-                            let movie = {
-                                id,
-                                watched: (input.checked) ? 1 : 0,
-                                title,
-                                trailer_url,
-                                streaming_service
-                            }
-                            movies.onUpdate(movie)
-                        });
-                    })
-                })
-                .catch(error => console.error('Error:', error));
-        },
-        onSubmit: () => {
-            const data = {
-                title: document.getElementsByName('title')[0].value,
-                trailer_url: document.getElementsByName('trailer_url')[0].value,
-                streaming_service: document.getElementsByName('streaming_service')[0].value,
-                watched: 0
-            };
-            console.log(data)
-            fetch(`/add/`, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-
-            }).then(res => res.json())
-                .then((response) => {
-                    console.log(response)
-                    if (response.statusCode == 202) {
-                        let movieHTML = movies.html(response);
-                        document.querySelector('table tbody').insertAdjacentHTML('beforeend', movieHTML);
-
-                        movies.list.push(response);
-                        console.log(movies.list);
-                    }
-
-                })
-                .catch(error => console.error('Error:', error));
-        },
-        onUpdate: (movie) => {
-            fetch(`/watched/`, {
-                method: 'PUT',
-                body: JSON.stringify(movie),
-                headers: {
-                    'Content-type': 'application/json'
-                }
-
-            }).then(res => res.json())
-                .then((response) => {
-                    console.log(response);
-
-                })
-                .catch(error => console.error('Error:', error));
-        },
-        html: (movie) => {
-            let checked = (movie.watched == 1) ? 'checked' : '';
-            let movieHTML = `<tr>
-                        <td scope="row">${movie.title}</td>
-                        <td><a href="${movie.trailer_url}" target="_blank">${movie.trailer_url}</a></td>
-                        <td>${movie.streaming_service}</td>
-                        <td><input type="checkbox" data-id="${movie.id}" ${checked}></td>
-                    </tr>`;
-
-            return movieHTML;
+    document.querySelector('.search input').addEventListener('keyup', (event) => {
+        if (event.currentTarget.value != '') {
+            document.querySelector('.fa-times').classList.add('is-showing');
+        } else {
+            document.querySelector('.fa-times').classList.remove('is-showing');
         }
-    }
+    });
 
-    movies.init();
+    document.querySelector('.fa-times').addEventListener('click', () => {
+        document.querySelector('.fa-times').classList.remove('is-showing');
+        document.querySelector('.search input').value = '';
+    });
+
+    document.querySelector('.search form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        window.location.href = `/search/${document.querySelector('.search input').value}`;
+    });
+
 </script>
 {{/extend}}
