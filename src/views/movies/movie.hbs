@@ -1,0 +1,25 @@
+{{#extend "body_class"}}
+
+{{/extend}}
+{{#extend "body"}}
+<main>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" />
+            </div>
+            <div class="col-12">
+                <p>{{ movie.overview }}</p>
+                <a href="{{ movie.homepage }}" target="_blank"> {{ movie.homepage }}</a>
+            </div>
+        </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key}}" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+    </div>
+</main>
+{{/extend}}
+
+{{#extend "js"}}
+{{/extend}}

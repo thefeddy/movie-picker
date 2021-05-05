@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put, HttpService } from '@nestjs/common';
 
 import { Response } from 'express';
 
@@ -7,7 +7,7 @@ import { MoviesDTO, CreateMovieDTO, WatchedMovieDTO } from './movies.dto';
 
 @Controller('')
 export class MoviesController {
-    constructor(private movieService: MovieService) { }
+    constructor(private movieService: MovieService, private http: HttpService) { }
 
     @Get('/')
     @Render('movies/index')
@@ -21,6 +21,21 @@ export class MoviesController {
 
     }
 
+    @Get('/movies')
+    @Render('movies/movies')
+    async movies(@Res() res: Response): Promise<any> {
+        return { api_key: process.env.TMDB_API_KEY }
+    }
+
+    @Get('/movie/:id')
+    @Render('movies/movie')
+    async movie(@Param('id') id: Number, @Res() res: Response): Promise<any> {
+        const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
+        const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&&language=en-US`).toPromise();
+        const movie = { ...response.data, ...trailer.data.results[0] };
+        console.log(movie);
+        return { movie };
+    }
 
     @Post('/add')
     async create(@Body() moviePayload: CreateMovieDTO): Promise<any> {

@@ -1,0 +1,60 @@
+{{#extend "body_class"}}
+
+{{/extend}}
+{{#extend "body"}}
+<main>
+    <div class="container">
+        <div id="movies" class="row justify-content-center">
+
+        </div>
+
+    </div>
+</main>
+{{/extend}}
+
+{{#extend "js"}}
+<script>
+    const API_KEY = `{{ api_key }}`;
+
+    const movies = {
+        list: [],
+        init: () => {
+            movies.getList();
+
+        },
+        getList: () => {
+            fetch(`/list/`, {
+                method: 'GET'
+            }).then(res => res.json())
+                .then((response) => {
+                    movies.list = response;
+                    for (const movie of response) {
+                        console.log(movie);
+                        movies.searchMovies(movie.title);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        },
+        searchMovies: (title) => {
+            fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${title}&page=1&include_adult=false`, {
+                method: 'GET'
+            }).then(res => res.json())
+                .then((response) => {
+                    const movie = response.results.find(movie => movie.title === title);
+                    console.log(movie);
+                    const html = ` <div class="col-3">
+                        <a href="/movie/${movie.id}">
+                            <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" />
+                        </a>
+                    </div>`;
+                    document.getElementById('movies').innerHTML += html;
+
+                })
+                .catch(error => console.error('Error:', error));
+        },
+
+    }
+
+    movies.init();
+</script>
+{{/extend}}

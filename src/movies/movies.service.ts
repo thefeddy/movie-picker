@@ -1,6 +1,7 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, HttpService } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { map, catchError } from 'rxjs/operators';
 
 import { Movies } from './movies.entity';
 import { CreateMovieDTO, MoviesDTO } from './movies.dto';
@@ -10,6 +11,7 @@ export class MovieService {
     constructor(
         @InjectRepository(Movies)
         private movieRepository: Repository<Movies>,
+        private http: HttpService
     ) { }
 
     async findAll(): Promise<Movies[]> {
