@@ -10,18 +10,24 @@ class="results"
     <div class="container">
         <div class="row">
             <h1>Search Results for <span>{{ search }}</span></h1>
+            <p>Total Results : {{ movies.total_results }}</p>
         </div>
         <div class="row">
             {{#each movies.results}}
+            {{#if this.poster_path}}
             <div class="col-3 movie">
-                <div class="details">
-                    <a href="/movie/{{ this.id }}"><i class="fal fa-info-circle"></i></a>
-                    <a href="#" data-id="{{ this.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                <div class="poster"
+                    style="background-image: url(https://image.tmdb.org/t/p/w500/{{ this.poster_path }})">
+                    <div class="details">
+                        <a href="/movie/{{ this.id }}"><i class="fal fa-info-circle"></i></a>
+                        <a href="#" data-id="{{ this.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                    </div>
                 </div>
-                <img src="https://image.tmdb.org/t/p/w500/{{ this.poster_path }}" />
             </div>
+            {{/if}}
             {{/each}}
         </div>
+        <!--- TODO:: PAGINATION --->
     </div>
 </div>
 {{/extend}}
