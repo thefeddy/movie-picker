@@ -47,7 +47,8 @@ export class MoviesController {
     async movie(@Param('id') id: Number, @Res() res: Response): Promise<any> {
         const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&&language=en-US`).toPromise();
-        const movie = { ...response.data, ...trailer.data.results[0] };
+        const movie = { ...response.data, ...trailer.data.results[0], id };
+
         return { movie };
     }
 
