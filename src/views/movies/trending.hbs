@@ -1,22 +1,18 @@
 {{#extend "body_id"}}
-id="search"
-{{/extend}}
-{{#extend "body_id"}}
-class="results"
+id="trending"
 {{/extend}}
 {{#extend "title"}}
-Searching for {{ search }} -
+Trending -
 {{/extend}}
 {{#extend "body"}}
 
 <div id="movies">
     <div class="container">
         <div class="row">
-            <h1>Search Results for <span>{{ search }}</span></h1>
-            <p>Total Results : {{ movies.total_results }}</p>
+            <h1>Trending <span>Movies</span></h1>
         </div>
         <div class="row">
-            {{#each movies.results}}
+            {{#each trending.results}}
             {{#if this.poster_path}}
             <div class="col-3 movie">
                 <div class="poster"
@@ -31,7 +27,6 @@ Searching for {{ search }} -
             {{/if}}
             {{/each}}
         </div>
-        <!--- TODO:: PAGINATION --->
     </div>
 </div>
 {{/extend}}

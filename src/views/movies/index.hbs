@@ -2,7 +2,7 @@
 id="search"
 {{/extend}}
 {{#extend "body"}}
-<h1>Search for Movie</h1>
+<h1>Search</h1>
 <div class="search">
     <form action="/search/">
         <i class="fal fa-search"></i>
@@ -10,6 +10,22 @@ id="search"
         <i class="fal fa-times"></i>
     </form>
 </div>
+{{!-- <ul>
+    <li>
+        <label>
+            <input type="radio" checked="checked" name="type" value="movie">
+            <span class="checkmark"></span>
+            <p>Movies</p>
+        </label>
+    </li>
+    <li>
+        <label>
+            <input type="radio" name="type" value="person">
+            <span class="checkmark"></span>
+            <p>Actors</p>
+        </label>
+    </li>
+</ul> --}}
 {{/extend}}
 
 {{#extend "js"}}

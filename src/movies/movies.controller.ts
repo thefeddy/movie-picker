@@ -20,10 +20,17 @@ export class MoviesController {
     async search(@Param('search') search: string, @Res() res: Response): Promise<any> {
         const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`;
         const movies = await this.http.get(url).toPromise();
-        console.log(movies.data)
+
         return { movies: movies.data, search: search };
     }
+    @Get('/trending')
+    @Render('movies/trending')
+    async trending(@Res() res: Response): Promise<any> {
+        const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
+        const trending = await this.http.get(url).toPromise();
 
+        return { trending: trending.data };
+    }
     @Get('/admin')
     @Render('movies/admin')
     async admin(@Res() res: Response): Promise<any> {
