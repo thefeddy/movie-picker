@@ -49,20 +49,17 @@ id="movie"
                 </div>
 
                 <div class="col-12">
-                    <ul class="cast">
+                    <ul class="scroll-section">
                         {{#each movie.cast }}
                         {{#if this.profile_path}}
                         <li>
-                            {{!-- <div class="info">
-                                <p>{{ this.name }}</p>
-                            </div> --}}
-                            <div class="photo">
+                            <a href="/actors/{{ this.id }}" class="photo">
                                 <div class="details">
-                                    <p>{{ this.name }}</p>
-                                    <span>{{ this.character }}</span>
+                                    <div class="heading">{{ this.name }}</div>
+                                    <div class="sub">{{ this.character }}</div>
                                 </div>
                                 <img src=" https://image.tmdb.org/t/p/w500/{{ this.profile_path }}">
-                            </div>
+                            </a>
                         </li>
                         {{/if}}
                         {{/each}}
@@ -89,7 +86,7 @@ id="movie"
 {{#extend "js"}}
 <script>
 
-    const movie_id = `{{ movie.id }}`;
+    const movie_id = `{{ movie._id }}`;
     const id = `{{ movie.added.id }}`;
 
     const movies = {

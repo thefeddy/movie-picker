@@ -1,0 +1,87 @@
+{{#extend "body_id"}}
+id="actor"
+{{/extend}}
+{{#extend "meta"}}
+<meta property="og:title" content="{{ actor.name }}" />
+<meta property="og:description" content="{{ actor.biography }}" />
+<meta property="og:type" content="Website" />
+<meta property="og:url" content="http://c335b9642806.ngrok.io/movie/{{ actor.id }}" />
+<meta property="og:image" content="https://image.tmdb.org/t/p/w500/{{ actor.poster_path }}" />
+{{/extend}}
+{{#extend "title"}}
+{{ movie.title }} -
+{{/extend}}
+
+{{#extend "body"}}
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-6">
+            <img src="https://image.tmdb.org/t/p/w500/{{ actor.profile_path }}" />
+        </div>
+        <div class="col-6">
+            <div class="row align-items-center">
+                <div class="col-9">
+                    <h1>{{ actor.name }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="col-12">
+                        <ul class="info">
+                            <li>Birth Place</li>
+                            <li>{{ actor.place_of_birth }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-12">
+                        <ul class="info">
+                            <li>Birthday </li>
+                            <li>{{ actor.birthday }}</li>
+                        </ul>
+                    </div>
+
+
+                    {{#if actor.deathday }}
+                    <div class="col-12">
+                        <ul class="info">
+                            <li>Death </li>
+                            <li>{{ actor.deathday }}</li>
+                        </ul>
+                    </div>
+                    {{/if}}
+                    <div class="col-12">
+                        <ul class="scroll-section">
+                            {{#each actor.movies }}
+                            {{#if this.poster_path}}
+                            <li>
+                                <a href="/movie/{{ this.id }}" class="photo">
+                                    <div class="details">
+                                        <div class="heading">{{ this.original_title }}</div>
+                                    </div>
+                                    <img src=" https://image.tmdb.org/t/p/w500/{{ this.poster_path }}">
+                                </a>
+                            </li>
+                            {{/if}}
+                            {{/each}}
+                        </ul>
+                    </div>
+                    <p>{{{ actor.biography }}}</p>
+
+                    {{#if actor.homepage }}
+                    <a href="{{ actor.homepage }}" class="homepage" target="_blank">{{ actor.homepage }}</a>
+                    {{/if}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{{/extend}}
+
+{{#extend "js"}}
+<script>
+
+
+</script>
+{{/extend}}

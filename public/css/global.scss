@@ -128,3 +128,107 @@ body {
         color: #f3b6d5;
     }
 }
+.scroll-section {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    margin: 25px 0 10px 0;
+    padding: 0;
+
+    list-style: none;
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.40);
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background: #f3b6d5;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #f3b6d5;
+    }
+    li {
+        font-family: 'Letterboard';
+
+        position: relative;
+
+        margin-right: 10px;
+        &:hover {
+            .info {
+                visibility: visible;
+
+                opacity: 1;
+            }
+        }
+        .photo {
+            display: block;
+            overflow: hidden;
+
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+
+            cursor: pointer;
+
+            border-radius: 100%;
+            &:hover {
+                .details {
+                    visibility: visible;
+
+                    opacity: 1;
+                }
+            }
+            .details {
+                font-family: 'Letterboard';
+
+                position: absolute;
+
+                display: flex;
+                visibility: hidden;
+                overflow: hidden;
+                flex-direction: column;
+
+                width: 100px;
+                height: 100px;
+                padding: 5px;
+
+                transition: all 550ms ease-in-out;
+
+                opacity: 0;
+                border-radius: 100%;
+                background: rgba(0,0,0,0.75);
+
+                align-items: center;
+                backdrop-filter: blur(2px);
+                justify-content: center;
+                .heading {
+                    font-size: 14px;
+                    line-height: 1;
+
+                    margin: 0;
+
+                    text-align: center;
+
+                    color: #f3b6d5;
+                }
+                .sub {
+                    font-size: 12px;
+
+                    text-align: center;
+
+                    color: #fff;
+                }
+            }
+            img {
+                width: 100px;
+                height: 100px;
+
+                object-fit: cover;
+            }
+        }
+    }
+}

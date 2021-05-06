@@ -1,35 +1,11 @@
-#movie {
+#actor {
     main {
-        display: grid;
-
-        height: 100vh;
-
-        place-content: center;
+        margin-top: 125px;
     }
     h1 {
         font-size: 35px;
 
         margin: 0;
-    }
-    i {
-        font-size: 30px;
-
-        transition: color 550ms ease-in-out;
-
-        color: #fff;
-    }
-    .status {
-        text-align: right;
-        a {
-            font-family: 'Letterboard';
-            font-size: 20px;
-
-            text-align: right;
-            text-decoration: none;
-            letter-spacing: 2px;
-
-            color: #f3b6d5;
-        }
     }
     p {
         font-size: 20px;
@@ -40,7 +16,7 @@
 
         color: #fff;
     }
-    .genres {
+    .info {
         font-family: 'Letterboard';
 
         display: flex;
@@ -65,7 +41,6 @@
             }
         }
     }
-
     .homepage {
         font-family: 'Letterboard';
         font-size: 20px;

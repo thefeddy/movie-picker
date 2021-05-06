@@ -62,7 +62,7 @@ export class MoviesController {
         if (added) {
             watched = (added.watched == 1) ? 'watched' : 'unwatched';
         }
-        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, id, added, watched };
+        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, added, watched };
 
         return { movie };
     }
