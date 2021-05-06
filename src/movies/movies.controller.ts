@@ -44,10 +44,15 @@ export class MoviesController {
 
     @Get('/movie/:id')
     @Render('movies/movie')
-    async movie(@Param('id') id: Number, @Res() res: Response): Promise<any> {
+    async movie(@Param('id') id: number, @Res() res: Response): Promise<any> {
         const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&&language=en-US`).toPromise();
-        const movie = { ...response.data, ...trailer.data.results[0], id };
+        const added = await this.movieService.findById(id);
+        let watched;
+        if (added) {
+            watched = (added.watched == 1) ? 'watched' : 'unwatched';
+        }
+        const movie = { ...response.data, ...trailer.data.results[0], id, added, watched };
 
         return { movie };
     }

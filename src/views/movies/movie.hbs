@@ -1,4 +1,5 @@
-{{#extend "body_class"}}
+{{#extend "body_id"}}
+id="movie"
 {{/extend}}
 
 {{#extend "title"}}
@@ -6,32 +7,46 @@
 {{/extend}}
 
 {{#extend "body"}}
-<main>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" />
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-6">
+            <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" />
+        </div>
+        <div class="col-6">
+            <div class="row align-items-center">
+                <div class="col-11">
+                    <h1>{{ movie.original_title }}</h1>
+                </div>
+                <div class="col-1">
+                    {{#if movie.added }}
+                    <a href="#" data-id="{{ movie.id }}" class="{{ movie.watched }}"><i class="fal fa-check"></i></a>
+                    {{else}}
+                    <a href="#" data-id="{{ movie.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                    {{/if}}
+                </div>
             </div>
-            <div class="col-12">
+            <div class="row">
                 <p>{{ movie.overview }}</p>
-                <a href="{{ movie.homepage }}" target="_blank"> {{ movie.homepage }}</a>
-            </div>
-            <div class="col-12">
+
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"
                     title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
+
+                <a href="{{ movie.homepage }}" target="_blank"> {{ movie.homepage }}</a>
             </div>
-            <a href="#" data-id="{{ movie.id }}" class="add">Add<i class="fal fa-plus-circle"></i></a>
         </div>
-
-
     </div>
-</main>
+</div>
 {{/extend}}
 
 {{#extend "js"}}
 <script>
+
+    const movie_id = `{{ movie.id }}`;
+    const id = `{{ movie.added.id }}`;
+
     const movies = {
         add: (id) => {
             const data = {
@@ -51,11 +66,44 @@
                 })
                 .catch(error => console.error('Error:', error));
         },
+        watch: () => {
+            let movie = {
+                id,
+                movie_id,
+                watched: 1,
+            }
+            fetch(`/watched/`, {
+                method: 'PUT',
+                body: JSON.stringify(movie),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+
+            }).then(res => res.json())
+                .then((response) => {
+                    console.log(response);
+
+                })
+                .catch(error => console.error('Error:', error));
+
+        }
     }
 
-    document.querySelector('.add').addEventListener('click', (event) => {
-        let id = event.currentTarget.getAttribute('data-id');
-        movies.add(id);
-    });
+    if (document.querySelector('.add')) {
+        document.querySelector('.add').addEventListener('click', (event) => {
+            let id = event.currentTarget.getAttribute('data-id');
+            movies.add(id);
+        });
+    }
+
+    if (document.querySelector('.unwatched')) {
+        document.querySelector('.unwatched').addEventListener('click', (event) => {
+            movies.watch();
+            document.querySelector('.unwatched').classList.add('watched');
+            document.querySelector('.unwatched').classList.add('unwatched');
+        });
+    }
+
+
 </script>
 {{/extend}}

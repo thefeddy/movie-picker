@@ -18,9 +18,9 @@ export class MovieService {
         return await this.movieRepository.find();
     }
 
-    async findByName(name: string): Promise<Movies> {
+    async findById(movie_id: number): Promise<Movies> {
         return this.movieRepository.findOne({
-            where: { name },
+            where: { movie_id },
         });
     }
 

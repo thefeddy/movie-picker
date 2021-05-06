@@ -1,0 +1,40 @@
+#movie {
+    main {
+        display: grid;
+
+        height: 100vh;
+
+        place-content: center;
+    }
+    h1 {
+        margin: 0;
+    }
+    i {
+        font-size: 30px;
+
+        transition: color 550ms ease-in-out;
+
+        color: #fff;
+    }
+    .watched {
+        i {
+            color: green !important;
+        }
+    }
+
+    .unwatched {
+        i {
+            color: red;
+        }
+    }
+    p {
+        font-family: 'Letterboard';
+        font-size: 20px;
+
+        margin: 25px 0;
+
+        letter-spacing: 1px;
+
+        color: #fff;
+    }
+}

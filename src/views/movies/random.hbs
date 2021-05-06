@@ -1,7 +1,9 @@
 {{#extend "body_id"}}id="random"{{/extend}}
 {{#extend "body"}}
 <main>
-    <h1>Picking Random Movie</h1>
+    <a href="#">
+        <h1>Picking Random Movie</h1>
+    </a>
     <h2></h2>
 </main>
 {{/extend}}
@@ -24,6 +26,7 @@
                     let unwatched = movies.list.filter(movie => movie.watched == 0)
                     unwatched = unwatched[Math.floor(Math.random() * unwatched.length)];
                     movies.getDetails(Number(unwatched.movie_id));
+                    document.querySelector('main a').href = `/movie/${unwatched.movie_id}`;
                 })
                 .catch(error => console.error('Error:', error));
         },
