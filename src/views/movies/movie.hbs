@@ -53,8 +53,16 @@ id="movie"
                         {{#each movie.cast }}
                         {{#if this.profile_path}}
                         <li>
-                            <div class="photo" data-name="{{ this.name }}" data-character="{{ this.character }}"><img
-                                    src="https://image.tmdb.org/t/p/w500/{{ this.profile_path }}"></div>
+                            {{!-- <div class="info">
+                                <p>{{ this.name }}</p>
+                            </div> --}}
+                            <div class="photo">
+                                <div class="details">
+                                    <p>{{ this.name }}</p>
+                                    <span>{{ this.character }}</span>
+                                </div>
+                                <img src=" https://image.tmdb.org/t/p/w500/{{ this.profile_path }}">
+                            </div>
                         </li>
                         {{/if}}
                         {{/each}}

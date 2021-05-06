@@ -91,7 +91,16 @@
         li {
             font-family: 'Letterboard';
 
+            position: relative;
+
             margin-right: 10px;
+            &:hover {
+                .info {
+                    visibility: visible;
+
+                    opacity: 1;
+                }
+            }
             .photo {
                 overflow: hidden;
 
@@ -99,12 +108,81 @@
                 height: 100px;
                 margin-bottom: 10px;
 
+                cursor: pointer;
+
                 border-radius: 100%;
+                &:hover {
+                    .details {
+                        visibility: visible;
+
+                        opacity: 1;
+                    }
+                }
+                .details {
+                    position: absolute;
+
+                    display: flex;
+                    visibility: hidden;
+                    overflow: hidden;
+                    flex-direction: column;
+
+                    width: 100px;
+                    height: 100px;
+                    padding: 5px;
+
+                    transition: all 550ms ease-in-out;
+
+                    opacity: 0;
+                    border-radius: 100%;
+                    background: rgba(0,0,0,0.75);
+
+                    align-items: center;
+                    backdrop-filter: blur(2px);
+                    justify-content: center;
+                    p {
+                        font-size: 14px;
+                        line-height: 1;
+                    }
+                    span {
+                        font-size: 12px;
+
+                        text-align: center;
+
+                        color: #fff;
+                    }
+                }
                 img {
                     width: 100px;
                     height: 100px;
 
                     object-fit: cover;
+                }
+            }
+            .info {
+                font-family: 'Letterboard';
+                font-size: 20px;
+
+                position: absolute;
+                z-index: 10;
+                top: 25px;
+                left: 25px;
+
+                visibility: hidden;
+
+                padding: 10px;
+
+                transition: all 550ms ease-in-out;
+                letter-spacing: 1px;
+
+                opacity: 0;
+                color: #fff;
+                border-radius: 10px;
+                background: rgba(0,0,0,0.75);
+
+                span {
+                    font-size: 15px;
+
+                    text-align: center;
                 }
             }
             p {
