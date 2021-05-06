@@ -48,6 +48,19 @@ id="movie"
                     </ul>
                 </div>
 
+                <div class="col-12">
+                    <ul class="cast">
+                        {{#each movie.cast }}
+                        {{#if this.profile_path}}
+                        <li>
+                            <div class="photo" data-name="{{ this.name }}" data-character="{{ this.character }}"><img
+                                    src="https://image.tmdb.org/t/p/w500/{{ this.profile_path }}"></div>
+                        </li>
+                        {{/if}}
+                        {{/each}}
+                    </ul>
+                </div>
+
                 <p>{{ movie.overview }}</p>
 
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"

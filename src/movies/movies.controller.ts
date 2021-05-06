@@ -56,12 +56,14 @@ export class MoviesController {
         const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const credits = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const added = await this.movieService.findById(id);
+        console.log(credits.data.cast)
+
         let watched;
         if (added) {
             watched = (added.watched == 1) ? 'watched' : 'unwatched';
         }
-        const movie = { ...response.data, ...trailer.data.results[0], credits.data, id, added, watched };
-        console.log(movie)
+        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, id, added, watched };
+
         return { movie };
     }
 

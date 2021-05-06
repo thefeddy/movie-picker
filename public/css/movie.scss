@@ -40,8 +40,7 @@
 
         color: #fff;
     }
-    .genres,
-    .cast {
+    .genres {
         font-family: 'Letterboard';
 
         display: flex;
@@ -63,6 +62,59 @@
                 margin-right: 15px;
 
                 color: #fff;
+            }
+        }
+    }
+    .cast {
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+
+        margin: 10px 0;
+        padding: 0;
+
+        list-style: none;
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.40);
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            background: #f3b6d5;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: #f3b6d5;
+        }
+        li {
+            font-family: 'Letterboard';
+
+            margin-right: 10px;
+            .photo {
+                overflow: hidden;
+
+                width: 100px;
+                height: 100px;
+                margin-bottom: 10px;
+
+                border-radius: 100%;
+                img {
+                    width: 100px;
+                    height: 100px;
+
+                    object-fit: cover;
+                }
+            }
+            p {
+                font-size: 15px;
+
+                margin: 0;
+
+                text-align: center;
+
+                color: #f3b6d5;
             }
         }
     }
