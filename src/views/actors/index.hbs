@@ -27,20 +27,22 @@ id="actor"
             </div>
             <div class="row">
                 <div class="col-12">
+                    {{#if actor.place_of_birth }}
                     <div class="col-12">
                         <ul class="info">
                             <li>Birth Place</li>
                             <li>{{ actor.place_of_birth }}</li>
                         </ul>
                     </div>
-
+                    {{/if}}
+                    {{#if actor.birthday }}
                     <div class="col-12">
                         <ul class="info">
                             <li>Birthday </li>
                             <li>{{ actor.birthday }}</li>
                         </ul>
                     </div>
-
+                    {{/if}}
 
                     {{#if actor.deathday }}
                     <div class="col-12">
