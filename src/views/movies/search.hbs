@@ -19,8 +19,9 @@ class="results"
                 <div class="poster"
                     style="background-image: url(https://image.tmdb.org/t/p/w500/{{ this.poster_path }})">
                     <div class="details">
-                        <a href="/movie/{{ this.id }}"><i class="fal fa-info-circle"></i></a>
-                        <a href="#" data-id="{{ this.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                        <a href="/movie/{{ this.id }}" class="about">About</a>
+                        <a href="#" data-id="{{ this.id }}" data-title="{{ this.title }}" class="add">Add to
+                            List</a>
                     </div>
                 </div>
             </div>
@@ -35,7 +36,8 @@ class="results"
 {{#extend "js"}}
 <script>
     const movies = {
-        add: (id) => {
+        fadeOut: null,
+        add: (id, title) => {
             const data = {
                 movie_id: id,
                 watched: 0
@@ -50,7 +52,11 @@ class="results"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
+                    document.querySelector('.added span').innerHTML = title;
+                    document.querySelector('.added').classList.add('is-showing');
+                    movies.fadeOut = setTimeout(() => {
+                        document.querySelector('.added').classList.remove('is-showing');
+                    }, 5000);
                 })
                 .catch(error => console.error('Error:', error));
         },
@@ -58,7 +64,12 @@ class="results"
 
     document.querySelectorAll('.add').forEach(add => add.addEventListener('click', (event) => {
         let id = event.currentTarget.getAttribute('data-id');
-        movies.add(id);
+        let title = event.currentTarget.getAttribute('data-title');
+        document.querySelector('.added').classList.remove('is-showing');
+        event.currentTarget.innerHTML = 'unwatched';
+        clearTimeout(movies.fadeOut);
+        movies.add(id, title);
+
     }));
 </script>
 {{/extend}}

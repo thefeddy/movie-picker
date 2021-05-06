@@ -88,3 +88,43 @@ body {
         }
     }
 }
+
+.added {
+    font-family: 'Letterboard';
+    font-size: 20px;
+
+    position: fixed;
+    z-index: 10;
+    top: 25px;
+    left: 25px;
+
+    display: flex;
+    visibility: hidden;
+    flex-direction: row;
+
+    height: 50px;
+    padding: 0 20px;
+
+    transition: all 550ms ease-in-out;
+    letter-spacing: 1px;
+
+    opacity: 0;
+    color: #fff;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.75);
+
+    align-items: center;
+    justify-content: center;
+    &.is-showing {
+        visibility: visible;
+
+        opacity: 1;
+    }
+    span {
+        display: inline-block;
+
+        margin: 0 4px;
+
+        color: #f3b6d5;
+    }
+}

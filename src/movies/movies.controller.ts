@@ -53,7 +53,7 @@ export class MoviesController {
             watched = (added.watched == 1) ? 'watched' : 'unwatched';
         }
         const movie = { ...response.data, ...trailer.data.results[0], id, added, watched };
-
+        console.log(movie)
         return { movie };
     }
 
