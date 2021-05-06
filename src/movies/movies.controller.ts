@@ -34,11 +34,6 @@ export class MoviesController {
 
         return { trending: trending.data };
     }
-    @Get('/admin')
-    @Render('movies/admin')
-    async admin(@Res() res: Response): Promise<any> {
-
-    }
 
     @Get('/random')
     @Render('movies/random')

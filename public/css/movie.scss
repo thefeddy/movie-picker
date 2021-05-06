@@ -82,3 +82,12 @@
         }
     }
 }
+@media(max-width:767px) {
+    #movie {
+        main {
+            display: block;
+
+            height: auto;
+        }
+    }
+}
