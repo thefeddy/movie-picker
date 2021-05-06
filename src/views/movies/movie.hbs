@@ -1,7 +1,13 @@
 {{#extend "body_id"}}
 id="movie"
 {{/extend}}
-
+{{#extend "meta"}}
+<meta property="og:title" content="{{ movie.title }}" />
+<meta property="og:description" content="{{ movie.overview }}" />
+<meta property="og:type" content="Website" />
+<meta property="og:url" content="http://c335b9642806.ngrok.io/movie/{{ movie.id }}" />
+<meta property="og:image" content="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" />
+{{/extend}}
 {{#extend "title"}}
 {{ movie.title }} ||
 {{/extend}}
