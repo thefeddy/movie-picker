@@ -29,7 +29,7 @@ body {
     height: 475px;
     padding-bottom: 30px;
 
-    cursor: pointer;
+
 
     .poster {
         position: relative;
@@ -45,11 +45,14 @@ body {
     &:hover {
         .details {
             opacity: 1;
+
+            backdrop-filter: blur(4px);
         }
         .poster {
             // transform: scale(1.1);
         }
     }
+
     .details {
         position: relative;
         z-index: 1;
@@ -62,16 +65,26 @@ body {
         padding-left: inherit;
 
         transition: opacity 550ms ease-in-out;
+        text-align: center;
 
         opacity: 0;
         background: rgba(0,0,0,0.75);
 
         align-items: center;
         place-content: center;
-        i {
-            font-size: 30px;
+        a {
+            font-family: 'Letterboard';
+            font-size: 20px;
 
-            color: #fff;
+            margin-top: 10px;
+
+            text-decoration: none;
+            letter-spacing: 2px;
+
+            color: #f3b6d5;
+            &.about {
+                color: #fff;
+            }
         }
     }
 }

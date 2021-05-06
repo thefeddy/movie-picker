@@ -24,26 +24,24 @@ id="movies"
                 .then((response) => {
                     movies.list = response;
                     for (const movie of response) {
-                        console.log(movie);
-                        movies.getDetails(Number(movie.movie_id));
+                        movies.getDetails(Number(movie.movie_id), movie.watched);
                     }
                 })
                 .catch(error => console.error('Error:', error));
         },
-        getDetails: (id) => {
+        getDetails: (id, watched) => {
             let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`;
             fetch(url, {
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
-
-                    console.log(response);
+                    watched = (watched == 1) ? 'watched' : 'unwatched';
                     const html = `<div class="col-3 movie">
                         <div class="poster"
                             style="background-image: url(https://image.tmdb.org/t/p/w500/${response.poster_path})">
                             <div class="details">
-                                <a href="/movie/${response.id}"><i class="fal fa-info-circle"></i></a>
-                                <a href="#" data-id="${response.id}" class="watched"><i class="fal fa-check-circle"></i></a>
+                                <a href="/movie/${response.id}" class="about">About</a>
+                                <a href="#" data-id="${response.id}" class="${watched}">${watched}</a>
                             </div>
                         </div>
                     </div>`;

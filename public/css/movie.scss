@@ -7,6 +7,8 @@
         place-content: center;
     }
     h1 {
+        font-size: 35px;
+
         margin: 0;
     }
     i {
@@ -16,19 +18,20 @@
 
         color: #fff;
     }
-    .watched {
-        i {
-            color: green !important;
-        }
-    }
+    .status {
+        text-align: right;
+        a {
+            font-family: 'Letterboard';
+            font-size: 20px;
 
-    .unwatched {
-        i {
-            color: red;
+            text-align: right;
+            text-decoration: none;
+            letter-spacing: 2px;
+
+            color: #f3b6d5;
         }
     }
     p {
-        font-family: 'Letterboard';
         font-size: 20px;
 
         margin: 25px 0;
@@ -36,5 +39,20 @@
         letter-spacing: 1px;
 
         color: #fff;
+    }
+    .homepage {
+        font-family: 'Letterboard';
+        font-size: 20px;
+
+        margin-top: 10px;
+
+        text-align: right;
+        text-decoration: none;
+        letter-spacing: 2px;
+
+        color: #f3b6d5;
+        span {
+            color: #fff;
+        }
     }
 }

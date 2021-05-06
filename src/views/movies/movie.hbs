@@ -15,14 +15,14 @@ id="movie"
         </div>
         <div class="col-6">
             <div class="row align-items-center">
-                <div class="col-11">
+                <div class="col-9">
                     <h1>{{ movie.original_title }}</h1>
                 </div>
-                <div class="col-1">
+                <div class="col-3 status">
                     {{#if movie.added }}
-                    <a href="#" data-id="{{ movie.id }}" class="{{ movie.watched }}"><i class="fal fa-check"></i></a>
+                    <a href="#" data-id="{{ movie.id }}" class="{{ movie.watched }}">{{ movie.watched }}</a>
                     {{else}}
-                    <a href="#" data-id="{{ movie.id }}" class="add"><i class="fal fa-plus-circle"></i></a>
+                    <a href="#" data-id="{{ movie.id }}" class="add">Add to list</a>
                     {{/if}}
                 </div>
             </div>
@@ -34,7 +34,8 @@ id="movie"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
 
-                <a href="{{ movie.homepage }}" target="_blank"> {{ movie.homepage }}</a>
+                <a href="{{ movie.homepage }}" class="homepage" target="_blank"><span>Streaming on</span> {{
+                    movie.homepage }}</a>
             </div>
         </div>
     </div>
@@ -99,8 +100,10 @@ id="movie"
     if (document.querySelector('.unwatched')) {
         document.querySelector('.unwatched').addEventListener('click', (event) => {
             movies.watch();
+            document.querySelector('.unwatched').innerHTML = 'watched';
             document.querySelector('.unwatched').classList.add('watched');
             document.querySelector('.unwatched').classList.add('unwatched');
+
         });
     }
 
