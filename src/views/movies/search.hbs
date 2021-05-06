@@ -31,15 +31,24 @@ Searching for {{ search }} -
             {{/if}}
             {{/each}}
         </div>
-        <!--- TODO:: PAGINATION --->
+
+        <div class="pagination">
+            {{#pagination pagination.total}}
+            <a href="{{ this }}">{{ this }}</a>
+            {{/pagination}}
+        </div>
     </div>
 </div>
 {{/extend}}
 
 {{#extend "js"}}
 <script>
+    const current_page = `{{ pagination.current }}`;
     const movies = {
         fadeOut: null,
+        init: () => {
+            document.querySelector(`.pagination a:nth-child(${current_page})`).classList.add('current');
+        },
         add: (id, title) => {
             const data = {
                 movie_id: id,
@@ -74,5 +83,7 @@ Searching for {{ search }} -
         movies.add(id, title);
 
     }));
+
+    movies.init();
 </script>
 {{/extend}}

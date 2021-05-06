@@ -232,3 +232,26 @@ body {
         }
     }
 }
+
+.pagination {
+    padding-bottom: 25px;
+
+    text-align: right;
+
+    justify-content: flex-end;
+    a {
+        font-family: 'Letterboard';
+        font-size: 25px;
+
+        margin-right: 5px;
+
+        transition: all 550ms ease-in-out;
+        text-decoration: none;
+
+        color: #fff;
+        &.current,
+        &:hover {
+            color: #f3b6d5;
+        }
+    }
+}

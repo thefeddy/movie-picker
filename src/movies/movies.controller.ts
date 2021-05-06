@@ -15,13 +15,16 @@ export class MoviesController {
 
     }
 
-    @Get('/search/:search')
+    @Get('/search/:search/:page')
     @Render('movies/search')
-    async search(@Param('search') search: string, @Res() res: Response): Promise<any> {
-        const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=1&include_adult=false`;
+    async search(@Param('search') search: string, @Param('page') page: string): Promise<any> {
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=${page}&include_adult=false`;
         const movies = await this.http.get(url).toPromise();
-
-        return { movies: movies.data, search: search };
+        const pagination = {
+            total: movies.data.total_pages,
+            current: movies.data.page
+        }
+        return { movies: movies.data, search, pagination };
     }
     @Get('/trending')
     @Render('movies/trending')

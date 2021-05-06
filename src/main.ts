@@ -33,6 +33,13 @@ async function bootstrap() {
             blocks[name] = [];
             return val;
         },
+        pagination: (n, block) => {
+            let page = '';
+            for (let i = 0; i < n; i += 1)
+                page += block.fn(i + 1);
+            return page;
+        }
+
     };
 
     const hbs = exphbs.create({
