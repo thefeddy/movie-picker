@@ -27,6 +27,21 @@ id="movie"
                 </div>
             </div>
             <div class="row">
+                <div class="col-12">
+                    <ul class="genres">
+                        <li>Release Date</li>
+                        <li>{{ movie.release_date }}</li>
+                    </ul>
+                </div>
+                <div class="col-12">
+                    <ul class="genres">
+                        <li>Genres</li>
+                        {{#each movie.genres }}
+                        <li>{{ this.name }}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+
                 <p>{{ movie.overview }}</p>
 
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"
@@ -38,6 +53,7 @@ id="movie"
                     movie.homepage }}</a>
                 {{/if}}
             </div>
+
         </div>
     </div>
 </div>

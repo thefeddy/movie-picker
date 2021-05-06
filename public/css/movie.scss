@@ -40,6 +40,32 @@
 
         color: #fff;
     }
+    .genres,
+    .cast {
+        font-family: 'Letterboard';
+
+        display: flex;
+
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+
+        align-items: center;
+        li {
+            margin-right: 10px;
+
+            color: #f3b6d5;
+
+            &:first-child {
+                font-size: 18px;
+
+                margin-right: 15px;
+
+                color: #fff;
+            }
+        }
+    }
     .homepage {
         font-family: 'Letterboard';
         font-size: 20px;
