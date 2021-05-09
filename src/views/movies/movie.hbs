@@ -187,6 +187,7 @@ id="movie"
     document.querySelector('.start-watching').addEventListener('click', (event) => {
         event.currentTarget.classList.add('watching');
         event.currentTarget.innerHTML = 'Now Watching';
+        document.querySelector('.unwatched').innerHTML = 'watched';
         movies.watching();
         movies.watch();
     });
