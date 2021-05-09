@@ -240,6 +240,9 @@ body {
 
     flex-wrap: wrap;
     justify-content: flex-end;
+    &.is-hidden {
+        display: none;
+    }
     a {
         font-family: 'Letterboard';
         font-size: 25px;

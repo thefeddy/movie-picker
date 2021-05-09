@@ -1,5 +1,88 @@
 #movies {
     main {
         margin-top: 125px;
+        .movies {
+            .movie {
+                &.hide {
+                    display: none;
+                }
+            }
+
+            &.watched {
+                .movie[data-watched='unwatched'] {
+                    display: none;
+                }
+            }
+            &.unwatched {
+                .movie[data-watched='watched'] {
+                    display: none;
+                }
+            }
+        }
+        .genres {
+            ul {
+                font-family: 'Letterboard';
+                font-size: 12px;
+
+                display: flex;
+
+                list-style: none;
+
+                cursor: pointer;
+                text-align: center;
+                letter-spacing: 1.5px;
+
+                color: #fff;
+
+                li {
+                    margin-right: 8px;
+                    padding: 5px;
+
+                    transition: all 550ms ease-in-out;
+
+                    border-radius: 10px;
+                    span {
+                        color: #f3b6d5;
+                    }
+                    &.selected,
+                    &:hover {
+                        background: rgba(0,0,0,0.75);
+                    }
+                }
+            }
+        }
+    }
+    .watch-status {
+        display: flex;
+
+        justify-content: flex-end;
+        > div {
+            font-family: 'Letterboard';
+            font-size: 20px;
+
+            display: flex;
+            flex-direction: row;
+
+            height: 50px;
+            margin-right: 10px;
+            padding: 0 20px;
+
+            cursor: pointer;
+            transition: all 550ms ease-in-out;
+            letter-spacing: 1px;
+
+            color: #fff;
+            border-radius: 10px;
+
+            align-items: center;
+            justify-content: center;
+            &:last-child {
+                margin: 0;
+            }
+            &.selected,
+            &:hover {
+                background: rgba(0,0,0,0.75);
+            }
+        }
     }
 }

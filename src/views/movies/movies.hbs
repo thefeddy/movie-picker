@@ -4,9 +4,20 @@ id="movies"
 {{#extend "body"}}
 <div class="container">
     <div class="row">
-        <h1>Selected Movies</h1>
+        <div class="col-4">
+            <h1>Selected Movies</h1>
+        </div>
+        <div class="col-8">
+            <div class="watch-status">
+                <div class="unwatched selected">Unwatched</div>
+                <div class="watched">Watched</div>
+            </div>
+        </div>
     </div>
-    <div class="movies row"></div>
+    <div class="row genres">
+        <ul></ul>
+    </div>
+    <div class="movies row unwatched"></div>
 </div>
 {{/extend}}
 
@@ -14,6 +25,9 @@ id="movies"
 <script>
     const API_KEY = `{{ api_key }}`;
     const movies = {
+        genres: [],
+        length: 0,
+        fetchCount: 0,
         init: () => {
             movies.getList();
         },
@@ -23,6 +37,8 @@ id="movies"
             }).then(res => res.json())
                 .then((response) => {
                     movies.list = response;
+                    movies.length = movies.list.length;
+                    console.log(movies.length);
                     for (const movie of response) {
                         movies.getDetails(Number(movie.movie_id), movie.watched);
                     }
@@ -35,8 +51,17 @@ id="movies"
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
+
                     watched = (watched == 1) ? 'watched' : 'unwatched';
-                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie"">
+                    let genres = [];
+                    for (const genre of response.genres) {
+                        let name = genre.name.toLowerCase();
+                        name = name.replace(' ', '-');
+                        genres.push(name);
+                        movies.genres.push(genre)
+                    }
+
+                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie ${genres.toString().replaceAll(',', ' ')}" data-watched="${watched}">
                         <div class="poster"
                             style="background-image: url(https://image.tmdb.org/t/p/w500/${response.poster_path})">
                             <div class="details">
@@ -45,11 +70,76 @@ id="movies"
                             </div>
                         </div>
                     </div>`;
+
+                    movies.fetchCount++;
+
+                    if (movies.fetchCount === movies.length) {
+                        console.log(movies.genres)
+                        const genres = combinedItems(movies.genres);
+                        for (const genre of genres) {
+                            document.querySelector('.genres ul').innerHTML += `<li data-name="${genre.name.toLowerCase()}">${genre.name} (<span>${genre.count}</span>)</li>`;
+                        }
+
+                        document.querySelectorAll('.genres li').forEach((genre) => {
+                            genre.addEventListener('click', () => {
+                                let genre_name = event.currentTarget.getAttribute('data-name');
+
+                                document.querySelectorAll('.genres li').forEach(genre => genre.classList.remove('selected'));
+                                document.querySelectorAll(`.movie`).forEach(movie => movie.classList.remove('hide'));
+
+                                event.currentTarget.classList.add('selected');
+
+                                document.querySelectorAll(`.movie:not(.${genre_name})`).forEach(movie => movie.classList.add('hide'));
+
+                            });
+                        });
+
+                    }
+
                     document.querySelector('.movies').innerHTML += html;
+
                 })
                 .catch(error => console.error('Error:', error));
         }
     }
     movies.init();
+
+    const combinedItems = (arr = []) => {
+        const res = arr.reduce((acc, obj) => {
+            let found = false;
+            for (let i = 0; i < acc.length; i++) {
+                if (acc[i].id === obj.id) {
+                    found = true;
+                    acc[i].count++;
+                };
+            }
+            if (!found) {
+                obj.count = 1;
+                acc.push(obj);
+            }
+            return acc;
+        }, []);
+        return res;
+    }
+
+
+    /* TODO:: MAKE IT DRY */
+    document.querySelector('.watch-status .watched').addEventListener('click', () => {
+        document.querySelector('.watch-status .unwatched').classList.remove('selected');
+        document.querySelector('.watch-status .watched').classList.add('selected');
+        document.querySelector('.movies').classList.remove('unwatched');
+        document.querySelector('.movies').classList.add('watched');
+    });
+
+    document.querySelector('.watch-status .unwatched').addEventListener('click', () => {
+        document.querySelector('.watch-status .watched').classList.remove('selected');
+        document.querySelector('.watch-status .unwatched').classList.add('selected');
+        document.querySelector('.movies').classList.remove('watched');
+        document.querySelector('.movies').classList.add('unwatched');
+    });
+
+
+
+
 </script>
 {{/extend}}

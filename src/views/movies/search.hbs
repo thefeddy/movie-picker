@@ -44,10 +44,14 @@ Searching for {{ search }} -
 {{#extend "js"}}
 <script>
     const current_page = `{{ pagination.current }}`;
+    const total = `{{ pagination.total }}`;
     const movies = {
         fadeOut: null,
         init: () => {
             document.querySelector(`.pagination a:nth-child(${current_page})`).classList.add('current');
+            if (total == 1) {
+                document.querySelector(`.pagination`).classList.add('is-hidden');
+            }
         },
         add: (id, title) => {
             const data = {
@@ -75,6 +79,8 @@ Searching for {{ search }} -
     }
 
     document.querySelectorAll('.add').forEach(add => add.addEventListener('click', (event) => {
+        event.preventDefault();
+
         let id = event.currentTarget.getAttribute('data-id');
         let title = event.currentTarget.getAttribute('data-title');
         document.querySelector('.added').classList.remove('is-showing');
