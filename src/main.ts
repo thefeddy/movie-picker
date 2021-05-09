@@ -7,6 +7,8 @@ import * as exphbs from 'express-handlebars';
 
 import { AppModule } from './app.module';
 
+import { HttpExceptionFilter } from './filters/http-exception.filter';
+
 const PUBLIC_PATH = join(__dirname, '..', 'public');
 const VIEWS_PATH = join(__dirname, '..', 'src/views');
 
@@ -38,6 +40,14 @@ async function bootstrap() {
             for (let i = 0; i < n; i += 1)
                 page += block.fn(i + 1);
             return page;
+        },
+        equals: (v1, v2, options) => {
+            console.log(v1.length, v2)
+            console.log(v1.length > v2)
+            if (v1.length === v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
         }
 
     };
@@ -57,6 +67,9 @@ async function bootstrap() {
         res.set('X-Powered-By', 'Lots and Lots of Coffee');
         next();
     });
+
+    app.useGlobalFilters(new HttpExceptionFilter());
+
     await app.listen(3002);
 }
 bootstrap();

@@ -3,10 +3,23 @@ nav {
     z-index: 2;
     top: 0;
 
+    display: flex;
+
     width: 100%;
+    margin-bottom: 25px;
     padding: 20px 0;
 
+    transition: all 550ms ease-in-out;
     text-align: right;
+
+    justify-content: flex-end;
+
+
+    &.sticky {
+        background: rgba(0,0,0,0.5);
+
+        backdrop-filter: blur(4px);
+    }
     a {
         font-family: 'Letterboard';
         font-size: 20px;
@@ -25,4 +38,11 @@ nav {
             color: #fff;
         }
     }
+}
+
+#nav-container-top {
+    min-width: 1px;
+    min-height: 1px;
+
+    background-color: transparent;
 }

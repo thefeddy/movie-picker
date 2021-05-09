@@ -16,6 +16,14 @@ Searching for {{ search }} -
             <p>Total Results : {{ movies.total_results }}</p>
         </div>
         <div class="row">
+
+            {{#equals movies.results 0}}
+            <div class="no-results">
+                <p>Sorry, but there were no movies found.</p>
+                <a href="/">Go Back to Search</a>
+            </div>
+            {{/equals}}
+
             {{#each movies.results}}
             {{#if this.poster_path}}
             <div class="col-12 col-sm-6 col-lg-3 movie">
@@ -48,7 +56,10 @@ Searching for {{ search }} -
     const movies = {
         fadeOut: null,
         init: () => {
-            document.querySelector(`.pagination a:nth-child(${current_page})`).classList.add('current');
+            if (total > 1) {
+                document.querySelector(`.pagination a:nth-child(${current_page})`).classList.add('current');
+            }
+
             if (total == 1) {
                 document.querySelector(`.pagination`).classList.add('is-hidden');
             }
