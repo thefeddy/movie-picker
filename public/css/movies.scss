@@ -20,11 +20,23 @@
             }
         }
         .genres {
+            display: flex;
+
+            margin-bottom: 25px;
+
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.50);
+
+            align-items: center;
+            backdrop-filter: blur(4px);
+            justify-content: center;
             ul {
                 font-family: 'Letterboard';
-                font-size: 12px;
+                font-size: 14px;
 
                 display: flex;
+
+                margin: 0;
 
                 list-style: none;
 
@@ -36,17 +48,13 @@
 
                 li {
                     margin-right: 8px;
-                    padding: 5px;
+                    padding: 10px 6px;
 
                     transition: all 550ms ease-in-out;
-
-                    border-radius: 10px;
-                    span {
-                        color: #f3b6d5;
-                    }
                     &.selected,
                     &:hover {
-                        background: rgba(0,0,0,0.75);
+                        color: #f3b6d5;
+                        background: rgba(0, 0, 0, 0.90);
                     }
                 }
             }

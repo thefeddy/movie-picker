@@ -5,7 +5,7 @@ id="movies"
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h1>Selected Movies</h1>
+            <h1>Selected Movies (<span class="total"></span>)</h1>
         </div>
         <div class="col-8">
             <div class="watch-status">
@@ -15,7 +15,9 @@ id="movies"
         </div>
     </div>
     <div class="row genres">
-        <ul></ul>
+        <ul>
+            <li class="all selected" data-name="all">All</li>
+        </ul>
     </div>
     <div class="movies row unwatched"></div>
 </div>
@@ -27,6 +29,8 @@ id="movies"
     const movies = {
         genres: [],
         length: 0,
+        unwatched: 0,
+        watched: 0,
         fetchCount: 0,
         init: () => {
             movies.getList();
@@ -38,10 +42,16 @@ id="movies"
                 .then((response) => {
                     movies.list = response;
                     movies.length = movies.list.length;
-                    console.log(movies.length);
+
                     for (const movie of response) {
                         movies.getDetails(Number(movie.movie_id), movie.watched);
+                        if (movie.watched === '1') {
+                            movies.watched++;
+                        } else {
+                            movies.unwatched++;
+                        }
                     }
+                    document.querySelector('.total').innerHTML = movies.unwatched;
                 })
                 .catch(error => console.error('Error:', error));
         },
@@ -52,8 +62,10 @@ id="movies"
             }).then(res => res.json())
                 .then((response) => {
 
+
                     watched = (watched == 1) ? 'watched' : 'unwatched';
                     let genres = [];
+
                     for (const genre of response.genres) {
                         let name = genre.name.toLowerCase();
                         name = name.replace(' ', '-');
@@ -74,10 +86,9 @@ id="movies"
                     movies.fetchCount++;
 
                     if (movies.fetchCount === movies.length) {
-                        console.log(movies.genres)
                         const genres = combinedItems(movies.genres);
                         for (const genre of genres) {
-                            document.querySelector('.genres ul').innerHTML += `<li data-name="${genre.name.toLowerCase()}">${genre.name} (<span>${genre.count}</span>)</li>`;
+                            document.querySelector('.genres ul').innerHTML += `<li data-name="${genre.name.toLowerCase().replace(' ', '-')}">${genre.name}</li>`;
                         }
 
                         document.querySelectorAll('.genres li').forEach((genre) => {
@@ -89,8 +100,9 @@ id="movies"
 
                                 event.currentTarget.classList.add('selected');
 
-                                document.querySelectorAll(`.movie:not(.${genre_name})`).forEach(movie => movie.classList.add('hide'));
-
+                                if (genre_name !== 'all') {
+                                    document.querySelectorAll(`.movie:not(.${genre_name})`).forEach(movie => movie.classList.add('hide'));
+                                }
                             });
                         });
 
@@ -129,6 +141,8 @@ id="movies"
         document.querySelector('.watch-status .watched').classList.add('selected');
         document.querySelector('.movies').classList.remove('unwatched');
         document.querySelector('.movies').classList.add('watched');
+        document.querySelector('.total').innerHTML = movies.watched;
+
     });
 
     document.querySelector('.watch-status .unwatched').addEventListener('click', () => {
@@ -136,6 +150,8 @@ id="movies"
         document.querySelector('.watch-status .unwatched').classList.add('selected');
         document.querySelector('.movies').classList.remove('watched');
         document.querySelector('.movies').classList.add('unwatched');
+        document.querySelector('.total').innerHTML = movies.unwatched;
+
     });
 
 
