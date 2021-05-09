@@ -16,7 +16,7 @@ id="movie"
 <div class="container">
     <div class="row justify-content-center">
 
-        <div class="col-12 col-sm-12 col-lg-6">
+        <div class="poster col-12 col-sm-12 col-lg-6">
             <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" />
         </div>
         <div class="col-12 col-sm-12 col-lg-6">
@@ -58,7 +58,7 @@ id="movie"
                                     <div class="heading">{{ this.name }}</div>
                                     <div class="sub">{{ this.character }}</div>
                                 </div>
-                                <img src=" https://image.tmdb.org/t/p/w500/{{ this.profile_path }}">
+                                <img src="https://image.tmdb.org/t/p/w500/{{ this.profile_path }}">
                             </a>
                         </li>
                         {{/if}}
@@ -72,10 +72,14 @@ id="movie"
                     title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
-                {{#if movie.homepage }}
+
+            </div>
+            <div class="row">
+                <div class="start-watching {{ movie.watched }}">Watching Movie?</div>
+                {{!-- {{#if movie.homepage }}
                 <a href="{{ movie.homepage }}" class="homepage" target="_blank"><span>Streaming on</span> {{
                     movie.homepage }}</a>
-                {{/if}}
+                {{/if}} --}}
             </div>
 
         </div>
@@ -88,7 +92,7 @@ id="movie"
 
     const movie_id = `{{ movie._id }}`;
     const id = `{{ movie.added.id }}`;
-
+    let isWatching = false;
     const movies = {
         fadeOut: null,
         add: (id, title) => {
@@ -130,11 +134,30 @@ id="movie"
             }).then(res => res.json())
                 .then((response) => {
                     console.log(response);
-
-
                 })
                 .catch(error => console.error('Error:', error));
+        },
+        watching: () => {
+            const movie = {
+                url: window.location.href,
+                movie_id: movie_id,
+                title: document.querySelector('h1').innerHTML,
+                poster: document.querySelector('.poster img').getAttribute('src'),
+                overview: document.querySelector('p').innerHTML
+            };
 
+            fetch(`/watching/`, {
+                method: 'POST',
+                body: JSON.stringify(movie),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+
+            }).then(res => res.json())
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(error => console.error('Error:', error));
         }
     }
 
@@ -161,6 +184,10 @@ id="movie"
         });
     }
 
-
+    document.querySelector('.start-watching').addEventListener('click', (event) => {
+        event.currentTarget.classList.add('watching');
+        event.currentTarget.innerHTML = 'Now Watching';
+        movies.watching();
+    });
 </script>
 {{/extend}}

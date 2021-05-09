@@ -5,10 +5,13 @@ import { Response } from 'express';
 import { MovieService } from './movies.service';
 import { MoviesDTO, CreateMovieDTO, WatchedMovieDTO } from './movies.dto';
 
+const { Webhook, MessageBuilder } = require('discord-webhook-node');
+
+
 @Controller('')
 export class MoviesController {
     constructor(private movieService: MovieService, private http: HttpService) { }
-
+    private hook = new Webhook(process.env.DISCORD_WEBHOOK);
     @Get('/')
     @Render('movies/index')
     async index(@Res() res: Response): Promise<any> {
@@ -81,6 +84,30 @@ export class MoviesController {
     async watched(@Body() moviePayload: MoviesDTO): Promise<any> {
         const movie = await this.movieService.watched(moviePayload);
         return movie;
+    }
+
+    @Post('/watching')
+    async watching(@Body() movie: any): Promise<any> {
+        this.hook.setUsername('The Sperg Usher');
+        this.hook.setAvatar('https://images.squarespace-cdn.com/content/v1/5ea326bd59c52d46dc2bb35e/1593446964682-YPURHWC3MNR6G2ET32HB/ke17ZwdGBToddI8pDm48kEe_mcRrPi0owKsOEvri4DwUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2doZ2E4t9jBRCFFsxkL63Kq3EgCzpFZzMz_Zg0ELkfZg8CjLISwBs8eEdxAxTptZAUg/Movie+Ticket+Image.png?format=2500w');
+
+        const embed = new MessageBuilder()
+            .setTitle(`We are Currently watching : ${movie.title}`)
+            .setURL(movie.url)
+            .setColor('#00b0f4')
+            .setDescription(`<@&841089593956892683> ${movie.overview}`)
+            .setImage(movie.poster)
+            .setTimestamp();
+
+
+        try {
+            await this.hook.send(embed)
+            return { status: 202, message: 'Web Hook Sent' };
+        } catch (error) {
+            return { error };
+        }
+
+
     }
 
 }

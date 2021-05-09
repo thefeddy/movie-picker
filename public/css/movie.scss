@@ -18,6 +18,32 @@
 
         color: #fff;
     }
+    .start-watching {
+        font-family: 'Letterboard';
+        font-size: 20px;
+
+        display: block;
+
+        width: auto;
+        margin-top: 25px;
+        margin-left: auto;
+
+        cursor: pointer;
+        transition: all 550ms ease-in-out;
+        text-decoration: none;
+        letter-spacing: 2px;
+
+        color: #f3b6d5;
+        border-radius: 8px;
+        &.watched {
+            display: none;
+        }
+        &.watching {
+            background: rgba(0,0,0,0.5);
+
+            backdrop-filter: blur(4px);
+        }
+    }
     .status {
         text-align: right;
         a {
