@@ -1,6 +1,9 @@
 #movies {
     main {
         margin-top: 125px;
+        .total {
+            color: #f3b6d5;
+        }
         .movies {
             .movie {
                 &.hide {
