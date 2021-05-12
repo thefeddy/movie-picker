@@ -44,11 +44,11 @@ id="movies"
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
-                    movies.list = response;
+                    movies.list = response.sort();
                     movies.length = movies.list.length;
-
-                    for (const movie of response) {
-                        movies.getDetails(Number(movie.movie_id), movie.watched);
+                    console.log(movies.list)
+                    for (const [index, movie] of response.entries()) {
+                        movies.getDetails(Number(movie.movie_id), movie.watched, index);
                         if (movie.watched === '1') {
                             movies.watched++;
                         } else {
@@ -59,7 +59,7 @@ id="movies"
                 })
                 .catch(error => console.error('Error:', error));
         },
-        getDetails: (id, watched) => {
+        getDetails: (id, watched, index) => {
             let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`;
             fetch(url, {
                 method: 'GET'
@@ -76,7 +76,7 @@ id="movies"
                         movies.genres.push(genre)
                     }
 
-                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie ${genres.toString().replaceAll(',', ' ')}" data-watched="${watched}">
+                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie ${genres.toString().replaceAll(',', ' ')}" style="order:${index}" data-watched="${watched}">
                         <div class="poster"
                             style="background-image: url(https://image.tmdb.org/t/p/w500/${response.poster_path})">
                             <div class="details">
