@@ -12,6 +12,7 @@ const { Webhook, MessageBuilder } = require('discord-webhook-node');
 export class MoviesController {
     constructor(private movieService: MovieService, private http: HttpService) { }
     private hook = new Webhook(process.env.DISCORD_WEBHOOK);
+    private secoond_Hook = new Webhook(process.env.DISCORD_WEBHOOK_SECOND);
     @Get('/')
     @Render('movies/index')
     async index(@Res() res: Response): Promise<any> {
@@ -91,6 +92,7 @@ export class MoviesController {
         this.hook.setUsername('The Sperg Usher');
         this.hook.setAvatar('https://images.squarespace-cdn.com/content/v1/5ea326bd59c52d46dc2bb35e/1593446964682-YPURHWC3MNR6G2ET32HB/ke17ZwdGBToddI8pDm48kEe_mcRrPi0owKsOEvri4DwUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2doZ2E4t9jBRCFFsxkL63Kq3EgCzpFZzMz_Zg0ELkfZg8CjLISwBs8eEdxAxTptZAUg/Movie+Ticket+Image.png?format=2500w');
 
+
         const embed = new MessageBuilder()
             .setTitle(`We are Currently watching : ${movie.title}`)
             .setURL(movie.url)
@@ -101,7 +103,8 @@ export class MoviesController {
 
 
         try {
-            await this.hook.send(embed)
+            // await this.hook.send(embed)
+            await this.secoond_Hook.send(embed);
             return { status: 202, message: 'Web Hook Sent' };
         } catch (error) {
             return { error };
