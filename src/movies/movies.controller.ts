@@ -103,8 +103,8 @@ export class MoviesController {
 
 
         try {
-            // await this.hook.send(embed)
-            await this.secoond_Hook.send(embed);
+            Promise.all([this.hook.send(embed), this.secoond_Hook.send(embed)]);
+
             return { status: 202, message: 'Web Hook Sent' };
         } catch (error) {
             return { error };
