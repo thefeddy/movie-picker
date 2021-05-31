@@ -7,8 +7,6 @@ import * as exphbs from 'express-handlebars';
 
 import { AppModule } from './app.module';
 
-import { HttpExceptionFilter } from './filters/http-exception.filter';
-
 const PUBLIC_PATH = join(__dirname, '..', 'public');
 const VIEWS_PATH = join(__dirname, '..', 'src/views');
 
@@ -67,8 +65,6 @@ async function bootstrap() {
         res.set('X-Powered-By', 'Lots and Lots of Coffee');
         next();
     });
-
-    app.useGlobalFilters(new HttpExceptionFilter());
 
     await app.listen(3002);
 }

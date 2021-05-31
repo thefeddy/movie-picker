@@ -1,5 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put, HttpService } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put, HttpService, UseGuards } from '@nestjs/common';
 
+
+import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { MovieService } from './movies.service';
@@ -41,6 +43,7 @@ export class MoviesController {
 
     @Get('/random')
     @Render('movies/random')
+    @UseGuards(AuthGuard('discord'))
     async random(@Res() res: Response): Promise<any> {
         return { api_key: process.env.TMDB_API_KEY }
     }

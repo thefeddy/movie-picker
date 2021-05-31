@@ -6,6 +6,8 @@ import { RouterModule, Routes } from 'nest-router';
 
 
 /* Modules */
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
 import { ActorsModule } from './actors/actors.module';
 
@@ -20,6 +22,10 @@ const routes: Routes = [
     {
         path: '/actors',
         module: ActorsModule,
+    },
+    {
+        path: '/auth',
+        module: AuthModule,
     },
 ];
 
@@ -44,7 +50,9 @@ const routes: Routes = [
         }),
         RouterModule.forRoutes(routes),
         MoviesModule,
-        ActorsModule
+        ActorsModule,
+        AuthModule,
+        UsersModule
     ],
     controllers: [],
     providers: [],

@@ -1,0 +1,53 @@
+{{#extend "body_id"}}
+id="search"
+{{/extend}}
+{{#extend "body_id"}}
+class="results"
+{{/extend}}
+{{#extend "title"}}
+Searching for {{ search }} -
+{{/extend}}
+{{#extend "body"}}
+
+<div id="movies">
+    <div class="container">
+        <div class="row">
+            <h1>Search Results for <span>{{ search }}</span></h1>
+            <p>Total Results : {{ movies.total_results }}</p>
+        </div>
+        <div class="row">
+
+            {{#equals movies.results 0}}
+            <div class="no-results">
+                <p>Sorry, but there were no movies found.</p>
+                <a href="/">Go Back to Search</a>
+            </div>
+            {{/equals}}
+
+            {{#each movies.results}}
+            {{#if this.poster_path}}
+            <div class="col-12 col-sm-6 col-lg-3 movie">
+                <div class="poster"
+                    style="background-image: url(https://image.tmdb.org/t/p/w500/{{ this.poster_path }})">
+                    <div class="details">
+                        <a href="/movie/{{ this.id }}" class="about">About</a>
+                        <a href="#" data-id="{{ this.id }}" data-title="{{ this.title }}" class="add">Add to
+                            List</a>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+
+        <div class="pagination">
+            {{#pagination pagination.total}}
+            <a href="{{ this }}">{{ this }}</a>
+            {{/pagination}}
+        </div>
+    </div>
+</div>
+{{/extend}}
+
+{{#extend "js"}}
+{{/extend}}
