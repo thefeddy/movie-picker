@@ -7,11 +7,6 @@ import { AuthService } from '../auth.service';
 import { Strategy } from 'passport-oauth2';
 import { stringify } from 'querystring';
 
-// change these to be your Discord client ID and secret
-const clientID = '848642812241117184';
-const clientSecret = 'D6FV95siN4kMrBKvo4WYY5581_iUA1cQ';
-const callbackURL = 'http://localhost:3002/auth/discord';
-
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord')
 {
@@ -21,16 +16,16 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord')
     ) {
         super({
             authorizationURL: `https://discordapp.com/api/oauth2/authorize?${stringify({
-                client_id: clientID,
-                redirect_uri: callbackURL,
+                client_id: process.env.DISCORD_CLIENT_ID,
+                redirect_uri: process.env.DISCORD_CALLBACK,
                 response_type: 'code',
-                scope: 'identify',
+                scope: 'identify'
             })}`,
             tokenURL: 'https://discordapp.com/api/oauth2/token',
             scope: 'identify',
-            clientID,
-            clientSecret,
-            callbackURL,
+            clientID: process.env.DISCORD_CLIENT_ID,
+            clientSecret: process.env.DISCORD_CLIENT_SECRET,
+            callbackURL: process.env.DISCORD_CALLBACK
         });
         console.log('hai')
     }
