@@ -1,53 +1,106 @@
 {{#extend "body_id"}}
 id="search"
 {{/extend}}
+{{#extend "body_id"}}
+class="results"
+{{/extend}}
+{{#extend "title"}}
+Searching for {{ search }} -
+{{/extend}}
 {{#extend "body"}}
-<h1>Search</h1>
-<div class="search">
-    <form action="/search/">
-        <i class="fal fa-search"></i>
-        <input type="text">
-        <i class="fal fa-times"></i>
-    </form>
+
+<div id="movies">
+    <div class="container">
+        <div class="row">
+            <h1>Search Results for <span>{{ search }}</span></h1>
+            <p>Total Results : {{ movies.total_results }}</p>
+        </div>
+        <div class="row">
+
+            {{#equals movies.results 0}}
+            <div class="no-results">
+                <p>Sorry, but there were no movies found.</p>
+                <a href="/">Go Back to Search</a>
+            </div>
+            {{/equals}}
+
+            {{#each movies.results}}
+            {{#if this.poster_path}}
+            <div class="col-12 col-sm-6 col-lg-3 movie">
+                <div class="poster"
+                    style="background-image: url(https://image.tmdb.org/t/p/w500/{{ this.poster_path }})">
+                    <div class="details">
+                        <a href="/movie/{{ this.id }}" class="about">About</a>
+                        <a href="#" data-id="{{ this.id }}" data-title="{{ this.title }}" class="add">Add to
+                            List</a>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+
+        <div class="pagination">
+            {{#pagination pagination.total}}
+            <a href="{{ this }}">{{ this }}</a>
+            {{/pagination}}
+        </div>
+    </div>
 </div>
-{{!-- <ul>
-    <li>
-        <label>
-            <input type="radio" checked="checked" name="type" value="movie">
-            <span class="checkmark"></span>
-            <p>Movies</p>
-        </label>
-    </li>
-    <li>
-        <label>
-            <input type="radio" name="type" value="person">
-            <span class="checkmark"></span>
-            <p>Actors</p>
-        </label>
-    </li>
-</ul> --}}
 {{/extend}}
 
 {{#extend "js"}}
 <script>
-    document.querySelector('.search input').addEventListener('keyup', (event) => {
-        if (event.currentTarget.value != '') {
-            document.querySelector('.fa-times').classList.add('is-showing');
-        } else {
-            document.querySelector('.fa-times').classList.remove('is-showing');
-        }
-    });
+    const current_page = `{{ pagination.current }}`;
+    const total = `{{ pagination.total }}`;
+    const movies = {
+        fadeOut: null,
+        init: () => {
+            if (total > 1) {
+                document.querySelector(`.pagination a:nth-child(${current_page})`).classList.add('current');
+            }
 
-    document.querySelector('.fa-times').addEventListener('click', () => {
-        document.querySelector('.fa-times').classList.remove('is-showing');
-        document.querySelector('.search input').value = '';
-    });
+            if (total == 1) {
+                document.querySelector(`.pagination`).classList.add('is-hidden');
+            }
+        },
+        add: (id, title) => {
+            const data = {
+                movie_id: id,
+                watched: 0
+            };
+            console.log(data)
+            fetch(`/add/`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-type': 'application/json'
+                }
 
-    document.querySelector('.search form').addEventListener('submit', (event) => {
+            }).then(res => res.json())
+                .then((response) => {
+                    document.querySelector('.added span').innerHTML = title;
+                    document.querySelector('.added').classList.add('is-showing');
+                    movies.fadeOut = setTimeout(() => {
+                        document.querySelector('.added').classList.remove('is-showing');
+                    }, 5000);
+                })
+                .catch(error => console.error('Error:', error));
+        },
+    }
+
+    document.querySelectorAll('.add').forEach(add => add.addEventListener('click', (event) => {
         event.preventDefault();
-        let search = encodeURIComponent(document.querySelector('.search input').value);
-        window.location.href = `/search/${search}/1`;
-    });
 
+        let id = event.currentTarget.getAttribute('data-id');
+        let title = event.currentTarget.getAttribute('data-title');
+        document.querySelector('.added').classList.remove('is-showing');
+        event.currentTarget.innerHTML = 'unwatched';
+        clearTimeout(movies.fadeOut);
+        movies.add(id, title);
+
+    }));
+
+    movies.init();
 </script>
 {{/extend}}
