@@ -91,7 +91,15 @@
             }
         }
     }
+    .streams {
+        margin-top: 25px;
+        img {
+            display: inline-block;
 
+            width: 55px;
+            height: 55px;
+        }
+    }
     .homepage {
         font-family: 'Letterboard';
         font-size: 20px;
@@ -114,6 +122,21 @@
             display: block;
 
             height: auto;
+        }
+        .container {
+            padding: 0;
+            .poster {
+                background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0));
+                img {
+                    display: block;
+
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+            .details {
+                padding: 0 15px;
+            }
         }
     }
 }

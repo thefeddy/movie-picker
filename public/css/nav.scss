@@ -41,8 +41,17 @@ nav {
 }
 
 #nav-container-top {
+    position: absolute;
+
     min-width: 1px;
     min-height: 1px;
 
+    pointer-events: none;
+
     background-color: transparent;
+}
+@media(max-width:767px) {
+    nav {
+        display: none;
+    }
 }
