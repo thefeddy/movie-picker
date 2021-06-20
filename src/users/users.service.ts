@@ -23,4 +23,9 @@ export class UsersService {
     ): Promise<User | undefined> {
         return this.users.find(user => user[field] === discordId);
     }
+
+    async register(): Promise<User> {
+
+        return;
+    }
 }

@@ -27,14 +27,13 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord')
             clientSecret: process.env.DISCORD_CLIENT_SECRET,
             callbackURL: process.env.DISCORD_CALLBACK
         });
-        console.log('hai')
+
     }
 
     async validate(accessToken: string): Promise<any> {
         const { data } = await this.http.get('https://discordapp.com/api/users/@me', {
             headers: { Authorization: `Bearer ${accessToken}` },
         }).toPromise();
-
         return this.authService.findUserFromDiscordId(data.id);
     }
 }
