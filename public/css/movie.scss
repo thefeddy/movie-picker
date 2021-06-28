@@ -10,6 +10,13 @@
         font-size: 35px;
 
         margin: 0;
+        + span {
+            display: inline-block;
+
+            margin: 5px 0;
+
+            color: #fff;
+        }
     }
     i {
         font-size: 30px;

@@ -22,13 +22,16 @@ id="movie"
             <div class="row align-items-center">
                 <div class="col-9">
                     <h1 title="{{ movie.original_title }}">{{ movie.title }}</h1>
+                    {{#if movie.watched }}
+                    {{#if movie.details.watched_on }}
+                    <span> Watched on {{ movie.details.watched_on }}</span>
+                    {{/if}}
+                    {{/if}}
                 </div>
                 <div class="col-3 status">
-                    {{#if movie.added }}
-                    <a href="#" data-id="{{ movie.id }}" class="{{ movie.watched }}">{{ movie.watched }}</a>
-                    {{else}}
+                    {{#unless movie.watched }}
                     <a href="#" data-id="{{ movie.id }}" data-title="{{ movie.title }}" class="add">Add to list</a>
-                    {{/if}}
+                    {{/unless }}
                 </div>
             </div>
 
@@ -85,7 +88,9 @@ id="movie"
 
             </div>
             <div class="row">
-                <div class="start-watching {{ movie.watched }}">Watching Movie?</div>
+                {{#unless movie.watched }}
+                <div class="start-watching">Watching Movie?</div>
+                {{/unless}}
                 {{!-- {{#if movie.homepage }}
                 <a href="{{ movie.homepage }}" class="homepage" target="_blank"><span>Streaming on</span> {{
                     movie.homepage }}</a>

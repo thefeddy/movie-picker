@@ -13,11 +13,10 @@ export class MoviesController {
     constructor(private movieService: MovieService, private http: HttpService) { }
     private hook = new Webhook(process.env.DISCORD_WEBHOOK);
     private secoond_Hook = new Webhook(process.env.DISCORD_WEBHOOK_SECOND);
+
     @Get('/')
     @Render('movies/index')
-    async index(@Res() res: Response): Promise<any> {
-
-    }
+    async index(@Res() res: Response): Promise<any> { }
 
     @Get('/search/:search/:page')
     @Render('movies/search')
@@ -59,13 +58,10 @@ export class MoviesController {
         const credits = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const streaming = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
 
-        const added = await this.movieService.findById(id);
+        const details = await this.movieService.findById(id);
+        const watched = (details.watched == 0) ? false : true;
 
-        let watched;
-        if (added) {
-            watched = (added.watched == 1) ? 'watched' : 'unwatched';
-        }
-        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, added, watched, streams: streaming.data.results.US };
+        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, details, watched, streams: streaming.data.results.US };
 
         return { movie };
     }
