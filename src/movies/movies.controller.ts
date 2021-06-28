@@ -59,7 +59,12 @@ export class MoviesController {
         const streaming = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
 
         const details = await this.movieService.findById(id);
-        const watched = (details.watched == 0) ? false : true;
+
+        let watched;
+        if (details) {
+            watched = (details.watched == 0) ? false : true;
+        }
+
 
         const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, details, watched, streams: streaming.data.results.US };
 
