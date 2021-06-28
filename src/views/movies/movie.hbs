@@ -21,7 +21,7 @@ id="movie"
         <div class="details col-12 col-lg-6">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h1>{{ movie.original_title }}</h1>
+                    <h1 title="{{ movie.original_title }}">{{ movie.title }}</h1>
                 </div>
                 <div class="col-3 status">
                     {{#if movie.added }}
