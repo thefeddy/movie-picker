@@ -37,7 +37,7 @@ export class Movies {
         nullable: true,
         length: 255
     })
-    watched_with: number;
+    watched_with: string;
 
     @Column({
         name: 'watched_on',
@@ -54,12 +54,15 @@ export class Movies {
     added: Date;
 
     toResponseObject(): MoviesRO {
-        const { id, movie_id, watched } = this;
+        const { id, movie_id, watched, watched_on, added, watched_with } = this;
 
         const responseObject: MoviesRO = {
             id,
             movie_id,
-            watched
+            watched,
+            watched_on,
+            added,
+            watched_with
         };
 
         return responseObject;

@@ -108,7 +108,8 @@ id="movie"
         add: (id, title) => {
             const data = {
                 movie_id: id,
-                watched: 0
+                watched: 0,
+                added: new Date()
             };
             fetch(`/add/`, {
                 method: 'POST',

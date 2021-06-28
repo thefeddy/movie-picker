@@ -42,6 +42,6 @@ export class MovieService {
     }
 
     async watched(movie: MoviesDTO): Promise<Movies> {
-        return await this.movieRepository.save({ ...movie, id: Number(movie.id) });
+        return await this.movieRepository.save({ ...movie, id: Number(movie.id), watched_on: new Date() });
     }
 }
