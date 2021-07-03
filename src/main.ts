@@ -42,8 +42,6 @@ async function bootstrap() {
             return page;
         },
         equals: (v1, v2, options) => {
-            console.log(v1.length, v2)
-            console.log(v1.length > v2)
             if (v1.length === v2) {
                 return options.fn(this);
             }

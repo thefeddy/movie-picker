@@ -59,7 +59,6 @@ export class MoviesController {
         const streaming = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
 
         const details = await this.movieService.findById(id);
-
         let watched;
         if (details) {
             watched = (details.watched == 0) ? false : true;
@@ -99,13 +98,13 @@ export class MoviesController {
             .setTitle(`We are Currently watching : ${movie.title}`)
             .setURL(movie.url)
             .setColor('#00b0f4')
-            .setDescription(`<@&841089593956892683> ${movie.overview}`)
+            .setDescription(`${movie.overview}`)
             .setImage(movie.poster)
             .setTimestamp();
 
 
         try {
-            Promise.all([this.hook.send(embed), this.secoond_Hook.send(embed)]);
+            Promise.all([this.hook.send(embed)]);
 
             return { status: 202, message: 'Web Hook Sent' };
         } catch (error) {

@@ -29,9 +29,13 @@ id="movie"
                     {{/if}}
                 </div>
                 <div class="col-3 status">
+                    {{#if movie.details }}
                     {{#unless movie.watched }}
+                    <a href="#" data-id="{{ movie.id }}" class="unwatched">unwatched</a>
+                    {{/unless}}
+                    {{else}}
                     <a href="#" data-id="{{ movie.id }}" data-title="{{ movie.title }}" class="add">Add to list</a>
-                    {{/unless }}
+                    {{/if}}
                 </div>
             </div>
 
@@ -106,7 +110,7 @@ id="movie"
 <script>
 
     const movie_id = `{{ movie._id }}`;
-    const id = `{{ movie.added.id }}`;
+    const id = `{{ movie.details.id }}`;
     let isWatching = false;
     const movies = {
         fadeOut: null,
@@ -125,7 +129,6 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
                     document.querySelector('.added span').innerHTML = title;
                     document.querySelector('.added').classList.add('is-showing');
                     movies.fadeOut = setTimeout(() => {
@@ -149,19 +152,19 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response);
+
                 })
                 .catch(error => console.error('Error:', error));
         },
         watching: () => {
             const movie = {
+                id: id,
                 url: window.location.href,
                 movie_id: movie_id,
                 title: document.querySelector('h1').innerHTML,
                 poster: document.querySelector('.poster img').getAttribute('src'),
                 overview: document.querySelector('p').innerHTML
             };
-
             fetch(`/watching/`, {
                 method: 'POST',
                 body: JSON.stringify(movie),
@@ -171,7 +174,6 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
                 })
                 .catch(error => console.error('Error:', error));
         }

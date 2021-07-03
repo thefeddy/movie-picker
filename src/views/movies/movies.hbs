@@ -46,7 +46,6 @@ id="movies"
                 .then((response) => {
                     movies.list = response.sort();
                     movies.length = movies.list.length;
-                    console.log(movies.list)
                     for (const [index, movie] of response.entries()) {
                         movies.getDetails(Number(movie.movie_id), movie.watched, index);
                         if (movie.watched === '1') {
