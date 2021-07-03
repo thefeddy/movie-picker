@@ -34,7 +34,7 @@ export class MovieService {
             throw new HttpException('Movie already added', HttpStatus.FOUND);
         }
 
-        return await this.movieRepository.save({ ...movie, statusCode: HttpStatus.ACCEPTED });
+        return await this.movieRepository.save({ ...movie });
     }
 
     async remove(id: number): Promise<void> {
