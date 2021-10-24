@@ -12,6 +12,6 @@ export class CreateMovieDTO {
 
 export class WatchedMovieDTO {
     readonly id: number;
-    readonly movie_id: number;
+    readonly movie_id: string;
     readonly watched: number;
 }

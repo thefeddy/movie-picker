@@ -31,13 +31,38 @@ export class Movies {
     })
     watched: number;
 
+    @Column({
+        name: 'watched_with',
+        type: 'varchar',
+        nullable: true,
+        length: 255
+    })
+    watched_with: string;
+
+    @Column({
+        name: 'watched_on',
+        type: 'timestamptz',
+        nullable: true,
+    })
+    watched_on: Date;
+
+    @Column({
+        name: 'added',
+        type: 'timestamptz',
+        nullable: true,
+    })
+    added: Date;
+
     toResponseObject(): MoviesRO {
-        const { id, movie_id, watched } = this;
+        const { id, movie_id, watched, watched_on, added, watched_with } = this;
 
         const responseObject: MoviesRO = {
             id,
             movie_id,
-            watched
+            watched,
+            watched_on,
+            added,
+            watched_with
         };
 
         return responseObject;

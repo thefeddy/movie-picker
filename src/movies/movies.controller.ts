@@ -15,11 +15,10 @@ export class MoviesController {
     constructor(private movieService: MovieService, private http: HttpService) { }
     private hook = new Webhook(process.env.DISCORD_WEBHOOK);
     private secoond_Hook = new Webhook(process.env.DISCORD_WEBHOOK_SECOND);
+
     @Get('/')
     @Render('movies/index')
-    async index(@Res() res: Response): Promise<any> {
-
-    }
+    async index(@Res() res: Response): Promise<any> { }
 
     @Get('/search/:search/:page')
     @Render('movies/search')
@@ -60,14 +59,16 @@ export class MoviesController {
         const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
         const credits = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
-        const added = await this.movieService.findById(id);
-        console.log(credits.data.cast)
+        const streaming = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
 
+        const details = await this.movieService.findById(id);
         let watched;
-        if (added) {
-            watched = (added.watched == 1) ? 'watched' : 'unwatched';
+        if (details) {
+            watched = (details.watched == 0) ? false : true;
         }
-        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, added, watched };
+
+
+        const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, details, watched, streams: streaming.data.results.US };
 
         return { movie };
     }
@@ -100,7 +101,7 @@ export class MoviesController {
             .setTitle(`We are Currently watching : ${movie.title}`)
             .setURL(movie.url)
             .setColor('#00b0f4')
-            .setDescription(`<@&841089593956892683> ${movie.overview}`)
+            .setDescription(`${movie.overview}`)
             .setImage(movie.poster)
             .setTimestamp();
 

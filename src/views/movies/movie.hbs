@@ -14,24 +14,31 @@ id="movie"
 
 {{#extend "body"}}
 <div class="container">
-    <div class="row justify-content-center">
-
-        <div class="poster col-12 col-sm-12 col-lg-6">
+    <div class="row">
+        <div class="poster col-12 col-lg-6">
             <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" />
         </div>
-        <div class="col-12 col-sm-12 col-lg-6">
+        <div class="details col-12 col-lg-6">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h1>{{ movie.original_title }}</h1>
+                    <h1 title="{{ movie.original_title }}">{{ movie.title }}</h1>
+                    {{#if movie.watched }}
+                    {{#if movie.details.watched_on }}
+                    <span> Watched on {{ movie.details.watched_on }}</span>
+                    {{/if}}
+                    {{/if}}
                 </div>
                 <div class="col-3 status">
-                    {{#if movie.added }}
-                    <a href="#" data-id="{{ movie.id }}" class="{{ movie.watched }}">{{ movie.watched }}</a>
+                    {{#if movie.details }}
+                    {{#unless movie.watched }}
+                    <a href="#" data-id="{{ movie.id }}" class="unwatched">unwatched</a>
+                    {{/unless}}
                     {{else}}
                     <a href="#" data-id="{{ movie.id }}" data-title="{{ movie.title }}" class="add">Add to list</a>
                     {{/if}}
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-12">
                     <ul class="genres">
@@ -47,7 +54,17 @@ id="movie"
                         {{/each}}
                     </ul>
                 </div>
+                {{#if movie.streams.flatrate }}
+                <div class="col-12 streams">
+                    <ul class="genres">
+                        <li>Streaming On</li>
 
+                        {{#each movie.streams.flatrate }}
+                        <li><img src="https://image.tmdb.org/t/p/original/{{ this.logo_path }}"></li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
                 <div class="col-12">
                     <ul class="scroll-section">
                         {{#each movie.cast }}
@@ -75,7 +92,9 @@ id="movie"
 
             </div>
             <div class="row">
-                <div class="start-watching {{ movie.watched }}">Watching Movie?</div>
+                {{#unless movie.watched }}
+                <div class="start-watching">Watching Movie?</div>
+                {{/unless}}
                 {{!-- {{#if movie.homepage }}
                 <a href="{{ movie.homepage }}" class="homepage" target="_blank"><span>Streaming on</span> {{
                     movie.homepage }}</a>
@@ -91,14 +110,15 @@ id="movie"
 <script>
 
     const movie_id = `{{ movie._id }}`;
-    const id = `{{ movie.added.id }}`;
+    const id = `{{ movie.details.id }}`;
     let isWatching = false;
     const movies = {
         fadeOut: null,
         add: (id, title) => {
             const data = {
                 movie_id: id,
-                watched: 0
+                watched: 0,
+                added: new Date()
             };
             fetch(`/add/`, {
                 method: 'POST',
@@ -109,7 +129,6 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
                     document.querySelector('.added span').innerHTML = title;
                     document.querySelector('.added').classList.add('is-showing');
                     movies.fadeOut = setTimeout(() => {
@@ -133,19 +152,19 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response);
+
                 })
                 .catch(error => console.error('Error:', error));
         },
         watching: () => {
             const movie = {
+                id: id,
                 url: window.location.href,
                 movie_id: movie_id,
                 title: document.querySelector('h1').innerHTML,
                 poster: document.querySelector('.poster img').getAttribute('src'),
                 overview: document.querySelector('p').innerHTML
             };
-
             fetch(`/watching/`, {
                 method: 'POST',
                 body: JSON.stringify(movie),
@@ -155,7 +174,6 @@ id="movie"
 
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
                 })
                 .catch(error => console.error('Error:', error));
         }
