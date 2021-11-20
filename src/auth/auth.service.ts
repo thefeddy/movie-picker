@@ -11,13 +11,11 @@ export class AuthService {
     ) {
     }
 
-    async findUserFromDiscordId(discordId: string): Promise<any> {
-        const user = await this.usersService.findOne('discord_id', discordId);
-
-        if (!user) {
-            throw new UnauthorizedException();
+    async validateUser(discord_id: string): Promise<any> {
+        const user = await this.usersService.findUser(discord_id);
+        if (user) {
+            return user;
         }
-
-        return user;
+        return null;
     }
 }

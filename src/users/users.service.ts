@@ -1,31 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, HttpService, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { getRepository, Repository } from 'typeorm';
 
-export type User = any;
+import { Users } from './users.entity';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[];
 
-    constructor() {
-        // change one of the below discord_id to your Discord ID, else you'll never be able to log in
-        this.users = [
-            {
-                userId: 1,
-                name: 'Bubonix#1062',
-                discord_id: '49351078080155648',
-            }
-        ];
-    }
+    constructor(
+        @InjectRepository(Users)
+        private userRepository: Repository<Users>
+    ) { }
 
-    async findOne(
-        field: string,
-        discordId: string,
-    ): Promise<User | undefined> {
-        return this.users.find(user => user[field] === discordId);
-    }
-
-    async register(): Promise<User> {
-
-        return;
+    async findUser(discord_id: string): Promise<any> {
+        return await this.userRepository.find({
+            where: { discord_id }
+        });
     }
 }

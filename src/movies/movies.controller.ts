@@ -6,6 +6,7 @@ import { Response } from 'express';
 
 import { MovieService } from './movies.service';
 import { MoviesDTO, CreateMovieDTO, WatchedMovieDTO } from './movies.dto';
+import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 
@@ -31,12 +32,14 @@ export class MoviesController {
         }
         return { movies: movies.data, search, pagination };
     }
+
+    @UseGuards(LocalAuthGuard)
     @Get('/trending')
     @Render('movies/trending')
     async trending(@Res() res: Response): Promise<any> {
         const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
         const trending = await this.http.get(url).toPromise();
-
+        console.log('------Trending------')
         return { trending: trending.data };
     }
 

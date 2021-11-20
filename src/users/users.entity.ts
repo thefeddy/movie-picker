@@ -11,7 +11,7 @@ import {
 import { UsersRO } from './users.ro';
 
 @Entity()
-export class Movies {
+export class Users {
     @PrimaryGeneratedColumn()
     id: number;
 

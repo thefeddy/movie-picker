@@ -34,6 +34,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord')
         const { data } = await this.http.get('https://discordapp.com/api/users/@me', {
             headers: { Authorization: `Bearer ${accessToken}` },
         }).toPromise();
-        return this.authService.findUserFromDiscordId(data.id);
+
+        return this.authService.validateUser(data.id);
     }
 }

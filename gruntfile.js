@@ -12,7 +12,10 @@ module.exports = function (grunt) {
                 files: [
                     {
                         'public/css/main.css':
-                            'public/css/main.scss'
+                            'public/css/main.scss',
+
+                        'public/css/admin/main.css':
+                            'public/css/admin/main.scss'
                     },
                     {
                         expand: true,
@@ -45,14 +48,14 @@ module.exports = function (grunt) {
                 options: {
                     mangle: false,
                     sourceMap: true,
-                    sourceMapName: 'public/js/finderscope/sourcemap.map',
+                    sourceMapName: 'public/js/burzum/sourcemap.map',
                 },
                 files: [
                     {
                         expand: true,
-                        cwd: 'public/js/finderscope/',
+                        cwd: 'public/js/burzum/',
                         src: ['**/*.js', '!*.min.js'],
-                        dest: 'public/js/finderscope/',
+                        dest: 'public/js/burzum/',
                         ext: '.min.js',
                     },
                 ],

@@ -11,8 +11,10 @@ import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
 import { ActorsModule } from './actors/actors.module';
 
+
 /* Entities */
 import { Movies } from './movies/movies.entity';
+import { Users } from './users/users.entity';
 
 const routes: Routes = [
     {
@@ -44,7 +46,7 @@ const routes: Routes = [
                 username: process.env.TYPEORM_USERNAME,
                 password: process.env.TYPEORM_PASSWORD,
                 database: process.env.TYPEORM_DATABASE,
-                entities: [Movies],
+                entities: [Movies, Users],
                 synchronize: true,
             }),
         }),
