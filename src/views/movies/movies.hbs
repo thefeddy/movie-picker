@@ -64,7 +64,7 @@ id="movies"
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
-
+                    console.log(response)
                     watched = (watched == 1) ? 'watched' : 'unwatched';
                     let genres = [];
 
@@ -74,16 +74,19 @@ id="movies"
                         genres.push(name);
                         movies.genres.push(genre)
                     }
-
                     const html = `<div class="col-12 col-sm-6 col-lg-3 movie ${genres.toString().replaceAll(',', ' ')}" style="order:${index}" data-watched="${watched}">
-                        <div class="poster"
-                            style="background-image: url(https://image.tmdb.org/t/p/w500/${response.poster_path})">
-                            <div class="details">
-                                <a href="/movie/${response.id}" class="about">About</a>
-                                <a href="#" data-id="${response.id}" class="${watched}">${watched}</a>
+                        <a href="/movie/${response.id}" title="${response.original_title}">
+                            <div class="poster">
+                                <img src="https://image.tmdb.org/t/p/w500/${response.poster_path}">
+                                <div class="details">
+                                    <div class="title">${response.title} <span>(${response.original_language})</span></div>
+                                    <div class="runtime">${response.runtime}<span>Minutes</span></div>
+                                    <div class="rating"><i class="fad fa-star"></i> ${response.vote_average}</div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>`;
+
 
                     movies.fetchCount++;
 
