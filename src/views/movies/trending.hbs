@@ -13,6 +13,8 @@ Trending -
         </div>
         <div class="row">
             {{#each trending.results}}
+
+            {{log this}}
             {{#if this.poster_path}}
             <div class="col-12 col-sm-6 col-lg-3 movie ">
                 <a href="/movie/{{this.id}}" title="{{this.original_title}}">

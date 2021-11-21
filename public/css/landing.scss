@@ -24,8 +24,6 @@
             width: 96%;
             height: 94%;
 
-            pointer-events: none;
-
             border: 16px solid;
             border-top-color: #020202;
             border-right-color: #080808;
@@ -36,9 +34,55 @@
             box-shadow: inset 0 0 18rem black,
             inset 0 0 3rem black,
             0 0 10rem black;
+            img {
+                position: absolute;
+
+                display: block;
+
+                width: 100%;
+                height: 100%;
+
+                transition: all 1050ms ease-in-out;
+
+                opacity: 0;
+
+                object-fit: cover;
+                &.is-showing {
+                    opacity: 1;
+                }
+            }
+            p {
+                font-family: 'Raleway';
+
+                position: absolute;
+                z-index: 4;
+                right: 15px;
+                bottom: 12px;
+
+                margin: 0;
+
+                letter-spacing: 1.5px;
+
+                color: #fff;
+                a {
+                    font-weight: 900;
+
+                    color: #fff;
+                }
+            }
+            .discord {
+                font-size: 30px;
+
+                position: absolute;
+                bottom: 0;
+                left: 15px;
+
+                color: #fff;
+            }
         }
         .screen {
             animation: textShadow 1.6s infinite;
+
             &::before {
                 position: absolute;
                 z-index: 2;

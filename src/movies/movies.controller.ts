@@ -34,7 +34,7 @@ export class MoviesController {
     async trending(@Res() res: Response): Promise<any> {
         const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
         const trending = await this.http.get(url).toPromise();
-
+        console.log(trending.data)
         return { trending: trending.data };
     }
 
@@ -44,10 +44,12 @@ export class MoviesController {
         return { api_key: process.env.TMDB_API_KEY }
     }
 
-    @Get('/movies')
+    @Get('/movies/:watched')
     @Render('movies/movies')
-    async movies(@Res() res: Response): Promise<any> {
-        return { api_key: process.env.TMDB_API_KEY }
+    async movies(@Res() res: Response, @Param('watched') watched: string): Promise<any> {
+        const watch = (watched === 'unwatched') ? 0 : 1;
+        const total = await this.movieService.findAllCount(watch);
+        return { api_key: process.env.TMDB_API_KEY, total, watch }
     }
 
     @Get('/movie/:id')
@@ -76,9 +78,9 @@ export class MoviesController {
         return movie;
     }
 
-    @Get('/list')
-    async list(@Res() res: Response): Promise<any> {
-        const movies = await this.movieService.findAll();
+    @Get('/list/:watched/:page')
+    async list(@Res() res: Response, @Param('watched') watched: number, @Param('page') page: number): Promise<any> {
+        const movies = await this.movieService.findAllByPage(watched, page);
         return res.status(HttpStatus.OK).json(movies);
     }
 

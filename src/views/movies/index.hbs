@@ -2,14 +2,30 @@
 id="landing"
 {{/extend}}
 {{#extend "body"}}
-<div class="crt"></div>
+<div class="crt">
+    <img src="/img/backgrounds/e5eb5e79393001.5cc188e7327cd.png" data-author="Gustavo Viselner"
+        data-url="https://www.behance.net/gustavo_v">
+    <img src="/img/backgrounds/7bff7679393001.5cc188e7307ea.png" data-author="Gustavo Viselner"
+        data-url="https://www.behance.net/gustavo_v">
+    <img src="/img/backgrounds/d0d78579393001.5cc188e733275.png" data-author="Gustavo Viselner"
+        data-url="https://www.behance.net/gustavo_v">
+    <img src="/img/backgrounds/c1f0e079393001.5cc188e731bcb.png" data-author="Gustavo Viselner"
+        data-url="https://www.behance.net/gustavo_v">
+    <img src="/img/backgrounds/d597ae79393001.5cc188e731280.png" data-author="Gustavo Viselner"
+        data-url="https://www.behance.net/gustavo_v">
+
+
+    <p>Background By <a href="" target="_blank">Author's Name</a></p>
+    <a href="https://discord.gg/jcFuX9n" target="_blank" class="discord"><i class="fab fa-discord"></i></a>
+</div>
 <div class="screen">
     <h1>Search</h1>
     <div class="bg"></div>
+
     <div class="search">
         <form action="/search/">
             <i class="fal fa-search"></i>
-            <input type="text">
+            <input type="text" placeholder="Search for a Movie">
             <i class="fal fa-times"></i>
         </form>
     </div>
@@ -37,6 +53,38 @@ id="landing"
         let search = encodeURIComponent(document.querySelector('.search input').value);
         window.location.href = `/search/${search}/1`;
     });
+
+
+    const backgrounds = document.querySelectorAll('.crt img');
+
+    document.querySelectorAll('.crt img')[0].classList.add('is-showing');
+    const author = document.querySelectorAll('.crt img')[0].getAttribute('data-author');
+    const url = document.querySelectorAll('.crt img')[0].getAttribute('data-url');
+
+    const about = document.querySelector('.crt p a');
+    about.setAttribute('href', url)
+    about.innerHTML = author;
+
+
+    let current = 0;
+    setInterval(() => {
+        document.querySelectorAll('.crt img')[current].classList.remove('is-showing');
+        if (current === document.querySelectorAll('.crt img').length - 1) {
+            current = 0;
+        } else {
+            current += 1;
+        }
+
+
+        document.querySelectorAll('.crt img')[current].classList.add('is-showing');
+        const author = document.querySelectorAll('.crt img')[current].getAttribute('data-author');
+        const url = document.querySelectorAll('.crt img')[current].getAttribute('data-url');
+
+        const about = document.querySelector('.crt p a');
+        about.setAttribute('href', url)
+        about.innerHTML = author;
+
+    }, 5000);
 
 </script>
 {{/extend}}

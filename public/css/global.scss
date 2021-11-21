@@ -301,3 +301,9 @@ body {
         }
     }
 }
+
+@media(max-width:767px) {
+    .movie {
+        height: auto;
+    }
+}

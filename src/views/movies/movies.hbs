@@ -5,21 +5,25 @@ id="movies"
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <h1>Selected Movies (<span class="total"></span>)</h1>
+            <h1>Selected Movies (<span class="total">{{ total }}</span>)</h1>
         </div>
         <div class="col-8">
             <div class="watch-status">
-                <div class="unwatched selected filter">Unwatched</div>
-                <div class="watched filter">Watched</div>
+                <a href="/movies/unwatched/" class="unwatched">Unwatched</a>
+                <a href="/movies/watched/" class="watched">Watched</a>
             </div>
         </div>
     </div>
-    <div class="row genres">
+    {{!-- <div class="row genres">
         <ul>
             <li class="all selected" data-name="all">All</li>
         </ul>
+    </div> --}}
+    <div class="movies row"></div>
+
+    <div class="row pagination">
+        <ul></ul>
     </div>
-    <div class="movies row unwatched"></div>
 </div>
 {{/extend}}
 
@@ -30,31 +34,64 @@ id="movies"
 
     const API_KEY = `{{ api_key }}`;
     const movies = {
-        genres: [],
-        length: 0,
-        unwatched: 0,
-        watched: 0,
-        fetchCount: 0,
-        filtering: 'unwatched',
+        length: Number(`{{ total }}`),
+        page: 1,
+        watched: Number(`{{ watch }}`),
         init: () => {
             movies.getList();
+
+            if (movies.watched === 0) {
+                document.querySelector('.unwatched').classList.add('selected');
+            } else {
+                document.querySelector('.watched').classList.add('selected');
+            }
+
+            let pages = Math.ceil(movies.length / 16);
+
+            for (let i = 0; i < pages; i += 1) {
+                document.querySelector('.pagination ul').innerHTML += `<li data-page="${i + 1}">${i + 1}</li>`;
+            }
+
+            document.querySelectorAll('.pagination ul li')[0].classList.add('selected');
+
+            document.querySelectorAll('.pagination ul li').forEach(li => li.addEventListener('click', () => {
+                const selected = event.currentTarget;
+                selected.classList.add('selected');
+                movies.page = selected.getAttribute('data-page');
+                movies.getList();
+            }));
+
+
+            document.querySelectorAll('.filter').forEach((filter) => {
+                filter.addEventListener('click', (event) => {
+                    const section = event.currentTarget.innerHTML.toLowerCase();
+
+                    document.querySelectorAll('.filter').forEach(filter => filter.classList.remove('selected'));
+                    event.currentTarget.classList.add('selected');
+                    movies.page = 1;
+                    movies.watched = (section === 'unwatched') ? 0 : 1;
+
+                    movies.getList();
+                });
+            });
+
         },
         getList: () => {
-            fetch(`/list/`, {
+            fetch(`/list/${movies.watched}/${movies.page}`, {
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
+                    document.querySelector('.movies').innerHTML = '';
+
                     movies.list = response.sort();
-                    movies.length = movies.list.length;
+
                     for (const [index, movie] of response.entries()) {
                         movies.getDetails(Number(movie.movie_id), movie.watched, index);
-                        if (movie.watched === '1') {
-                            movies.watched++;
-                        } else {
-                            movies.unwatched++;
-                        }
                     }
-                    document.querySelector('.total').innerHTML = movies.unwatched;
+
+                    document.querySelector('.total').innerHTML = movies.length;
+
+
                 })
                 .catch(error => console.error('Error:', error));
         },
@@ -64,17 +101,7 @@ id="movies"
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
-                    console.log(response)
-                    watched = (watched == 1) ? 'watched' : 'unwatched';
-                    let genres = [];
-
-                    for (const genre of response.genres) {
-                        let name = genre.name.toLowerCase();
-                        name = name.replace(' ', '-');
-                        genres.push(name);
-                        movies.genres.push(genre)
-                    }
-                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie ${genres.toString().replaceAll(',', ' ')}" style="order:${index}" data-watched="${watched}">
+                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie" style="order:${index}">
                         <a href="/movie/${response.id}" title="${response.original_title}">
                             <div class="poster">
                                 <img src="https://image.tmdb.org/t/p/w500/${response.poster_path}">
@@ -86,73 +113,15 @@ id="movies"
                             </div>
                         </a>
                     </div>`;
-
-
-                    movies.fetchCount++;
-
-                    if (movies.fetchCount === movies.length) {
-                        const genres = combinedItems(movies.genres);
-                        for (const genre of genres) {
-                            document.querySelector('.genres ul').innerHTML += `<li data-name="${genre.name.toLowerCase().replace(' ', '-')}">${genre.name}</li>`;
-                        }
-
-                        document.querySelectorAll('.genres li').forEach((genre) => {
-                            genre.addEventListener('click', () => {
-                                let genre_name = event.currentTarget.getAttribute('data-name');
-
-                                document.querySelectorAll('.genres li').forEach(genre => genre.classList.remove('selected'));
-                                document.querySelectorAll(`.movie`).forEach(movie => movie.classList.remove('hide'));
-
-                                event.currentTarget.classList.add('selected');
-
-                                if (genre_name !== 'all') {
-                                    document.querySelectorAll(`.movie:not(.${genre_name})`).forEach(movie => movie.classList.add('hide'));
-                                }
-
-                                document.querySelector('.total').innerHTML = document.querySelectorAll(`.movie[data-watched="${movies.filtering}"]:not(.hide)`).length;
-                            });
-                        });
-
-                    }
-
                     document.querySelector('.movies').innerHTML += html;
 
                 })
                 .catch(error => console.error('Error:', error));
         }
     }
+
     movies.init();
 
-    const combinedItems = (arr = []) => {
-        const res = arr.reduce((acc, obj) => {
-            let found = false;
-            for (let i = 0; i < acc.length; i++) {
-                if (acc[i].id === obj.id) {
-                    found = true;
-                    acc[i].count++;
-                };
-            }
-            if (!found) {
-                obj.count = 1;
-                acc.push(obj);
-            }
-            return acc;
-        }, []);
-        return res;
-    }
-
-    document.querySelectorAll('.filter').forEach((filter) => {
-        filter.addEventListener('click', (event) => {
-            movies.filtering = event.currentTarget.innerHTML.toLowerCase();
-            document.querySelectorAll('.filter').forEach(filter => filter.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            document.querySelector('.movies').classList.remove('watched');
-            document.querySelector('.movies').classList.remove('unwatched');
-            document.querySelector('.movies').classList.add(movies.filtering);
-            document.querySelector('.total').innerHTML = document.querySelectorAll(`.movie[data-watched="${movies.filtering}"]:not(.hide)`).length;
-
-        });
-    })
 
 
 </script>
