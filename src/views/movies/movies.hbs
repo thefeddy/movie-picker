@@ -101,7 +101,7 @@ id="movies"
                 method: 'GET'
             }).then(res => res.json())
                 .then((response) => {
-                    const html = `<div class="col-12 col-sm-6 col-lg-3 movie" style="order:${index}">
+                    const html = `<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 movie" style="order:${index}">
                         <a href="/movie/${response.id}" title="${response.original_title}">
                             <div class="poster">
                                 <img src="https://image.tmdb.org/t/p/w500/${response.poster_path}">

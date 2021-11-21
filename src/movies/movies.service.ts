@@ -31,6 +31,15 @@ export class MovieService {
         });
     }
 
+
+    async findAllByUnWatched(): Promise<Movies[]> {
+        return await this.movieRepository.find({
+            where: {
+                watched: 0
+            },
+        });
+    }
+
     async findById(movie_id: number): Promise<Movies> {
         return this.movieRepository.findOne({
             where: { movie_id },

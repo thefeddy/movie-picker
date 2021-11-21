@@ -41,7 +41,10 @@ export class MoviesController {
     @Get('/random')
     @Render('movies/random')
     async random(@Res() res: Response): Promise<any> {
-        return { api_key: process.env.TMDB_API_KEY }
+        const movies = await this.movieService.findAllByUnWatched();
+        const random = movies[Math.floor(Math.random() * movies.length)];
+    
+        return { api_key: process.env.TMDB_API_KEY, random: random.movie_id }
     }
 
     @Get('/movies/:watched')
