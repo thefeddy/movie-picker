@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
 import * as exphbs from 'express-handlebars';
+import * as passport from 'passport';
 
 import { AppModule } from './app.module';
 
@@ -58,6 +59,10 @@ async function bootstrap() {
 
     app.engine('hbs', hbs.engine);
     app.setViewEngine('hbs');
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
 
     app.use((req, res, next) => {
         res.set('X-Powered-By', 'Lots and Lots of Coffee');

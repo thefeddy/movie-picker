@@ -9,10 +9,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         super();
     }
 
-    async validate(discord_id: string): Promise<any> {
+    async validate(payload: any): Promise<any> {
         console.log('-------- Local Auth ------')
-        console.log(discord_id)
-        const user = await this.authService.validateUser(discord_id);
+        console.log(payload)
+        const user = await this.authService.validateUser(payload);
         if (!user) {
             throw new UnauthorizedException();
         }

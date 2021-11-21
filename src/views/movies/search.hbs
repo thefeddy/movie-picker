@@ -25,18 +25,26 @@ Searching for {{ search }} -
             {{/equals}}
 
             {{#each movies.results}}
-            {{#if this.poster_path}}
-            <div class="col-12 col-sm-6 col-lg-3 movie">
-                <div class="poster"
-                    style="background-image: url(https://image.tmdb.org/t/p/w500/{{ this.poster_path }})">
-                    <div class="details">
-                        <a href="/movie/{{ this.id }}" class="about">About</a>
-                        <a href="#" data-id="{{ this.id }}" data-title="{{ this.title }}" class="add">Add to
-                            List</a>
+
+
+            <div class="col-12 col-sm-6 col-lg-3 movie ">
+                <a href="/movie/{{this.id}}" title="{{this.original_title}}">
+                    <div class="poster">
+                        {{#if this.poster_path}}
+                        <img src="https://image.tmdb.org/t/p/w500/{{ this.poster_path }}">
+                        {{else}}
+                        <img src="/img/default.jpg">
+                        {{/if}}
+                        <div class="details">
+                            <div class="title">{{ this.title }} <span>({{this.original_language}})</span></div>
+                            {{!-- <div class="runtime">{{this.runtime}}<span>Minutes</span></div> --}}
+                            <div class="rating"><i class="fad fa-star"></i> {{this.vote_average}}</div>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
-            {{/if}}
+
+
             {{/each}}
         </div>
 

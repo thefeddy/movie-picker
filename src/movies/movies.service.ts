@@ -10,12 +10,34 @@ import { CreateMovieDTO, MoviesDTO } from './movies.dto';
 export class MovieService {
     constructor(
         @InjectRepository(Movies)
-        private movieRepository: Repository<Movies>,
-        private http: HttpService
+        private movieRepository: Repository<Movies>
     ) { }
 
-    async findAll(): Promise<Movies[]> {
-        return await this.movieRepository.find();
+    async findAllCount(watched: number): Promise<any> {
+        let [movies, count] = await this.movieRepository.findAndCount({
+            where: { watched: watched }
+        });
+
+        return count;
+    }
+
+    async findAllByPage(watched: number, page: number): Promise<Movies[]> {
+        return await this.movieRepository.find({
+            where: {
+                watched: watched
+            },
+            take: 16,
+            skip: (page - 1) * 16
+        });
+    }
+
+
+    async findAllByUnWatched(): Promise<Movies[]> {
+        return await this.movieRepository.find({
+            where: {
+                watched: 0
+            },
+        });
     }
 
     async findById(movie_id: number): Promise<Movies> {

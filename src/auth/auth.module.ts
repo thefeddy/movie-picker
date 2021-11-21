@@ -23,9 +23,8 @@ import { LocalStrategy } from './strategy/local.strategy';
     providers: [
         AuthService,
         UsersService,
-        SessionSerializer,
         DiscordStrategy,
-        LocalStrategy
+        SessionSerializer
     ],
     controllers: [
         AuthController,

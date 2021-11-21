@@ -1,6 +1,6 @@
 {{#extend "body_id"}}id="random"{{/extend}}
 {{#extend "body"}}
-<a href="#">
+<a href="/movie/{{ random }}">
     <h1>Picking Random Movie</h1>
 </a>
 <h2></h2>
@@ -9,45 +9,24 @@
 <script src="js/text-scramble.js"></script>
 <script>
     const API_KEY = `{{ api_key }}`;
+    const id = `{{ random }}`;
 
-    const movies = {
-        list: [],
-        init: () => {
-            movies.getList();
-        },
-        getList: () => {
-            fetch(`/list/`, {
-                method: 'GET'
-            }).then(res => res.json())
-                .then((response) => {
-                    movies.list = response;
-                    let unwatched = movies.list.filter(movie => movie.watched == 0)
-                    unwatched = unwatched[Math.floor(Math.random() * unwatched.length)];
-                    movies.getDetails(Number(unwatched.movie_id));
-                    document.querySelector('main a').href = `/movie/${unwatched.movie_id}`;
-                })
-                .catch(error => console.error('Error:', error));
-        },
-        getDetails: (id) => {
-            let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`;
-            fetch(url, {
-                method: 'GET'
-            }).then(res => res.json())
-                .then((response) => {
+    let url = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`;
+    fetch(url, {
+        method: 'GET'
+    }).then(res => res.json())
+        .then((response) => {
 
-                    const title = document.querySelector('h1');
-                    const titleFX = new TextScramble(title);
+            const title = document.querySelector('h1');
+            const titleFX = new TextScramble(title);
 
-                    const streaming = document.querySelector('h2');
-                    const streamingFX = new TextScramble(streaming);
-                    setTimeout(() => { titleFX.setText(response.title) }, 1000);
-                    // setTimeout(() => { streamingFX.setText(`Streaming on : ${response.homepage}`) }, 2000);
-                })
-                .catch(error => console.error('Error:', error));
+            const streaming = document.querySelector('h2');
+            const streamingFX = new TextScramble(streaming);
+            setTimeout(() => { titleFX.setText(response.title) }, 1000);
+            // setTimeout(() => { streamingFX.setText(`Streaming on : ${response.homepage}`) }, 2000);
+        })
+        .catch(error => console.error('Error:', error));
 
-        }
-    }
 
-    movies.init();
 </script>
 {{/extend}}

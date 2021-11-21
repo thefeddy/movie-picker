@@ -30,6 +30,8 @@ export class MoviesController {
             total: movies.data.total_pages,
             current: movies.data.page
         }
+
+        console.log(movies.data);
         return { movies: movies.data, search, pagination };
     }
 
@@ -39,7 +41,6 @@ export class MoviesController {
     async trending(@Res() res: Response): Promise<any> {
         const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
         const trending = await this.http.get(url).toPromise();
-        console.log('------Trending------')
         return { trending: trending.data };
     }
 
@@ -47,13 +48,18 @@ export class MoviesController {
     @Render('movies/random')
     @UseGuards(AuthGuard('discord'))
     async random(@Res() res: Response): Promise<any> {
-        return { api_key: process.env.TMDB_API_KEY }
+        const movies = await this.movieService.findAllByUnWatched();
+        const random = movies[Math.floor(Math.random() * movies.length)];
+
+        return { api_key: process.env.TMDB_API_KEY, random: random.movie_id }
     }
 
-    @Get('/movies')
+    @Get('/movies/:watched')
     @Render('movies/movies')
-    async movies(@Res() res: Response): Promise<any> {
-        return { api_key: process.env.TMDB_API_KEY }
+    async movies(@Res() res: Response, @Param('watched') watched: string): Promise<any> {
+        const watch = (watched === 'unwatched') ? 0 : 1;
+        const total = await this.movieService.findAllCount(watch);
+        return { api_key: process.env.TMDB_API_KEY, total, watch }
     }
 
     @Get('/movie/:id')
@@ -82,9 +88,9 @@ export class MoviesController {
         return movie;
     }
 
-    @Get('/list')
-    async list(@Res() res: Response): Promise<any> {
-        const movies = await this.movieService.findAll();
+    @Get('/list/:watched/:page')
+    async list(@Res() res: Response, @Param('watched') watched: number, @Param('page') page: number): Promise<any> {
+        const movies = await this.movieService.findAllByPage(watched, page);
         return res.status(HttpStatus.OK).json(movies);
     }
 
