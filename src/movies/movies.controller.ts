@@ -27,6 +27,8 @@ export class MoviesController {
             total: movies.data.total_pages,
             current: movies.data.page
         }
+
+        console.log(movies.data);
         return { movies: movies.data, search, pagination };
     }
     @Get('/trending')
@@ -43,7 +45,7 @@ export class MoviesController {
     async random(@Res() res: Response): Promise<any> {
         const movies = await this.movieService.findAllByUnWatched();
         const random = movies[Math.floor(Math.random() * movies.length)];
-    
+
         return { api_key: process.env.TMDB_API_KEY, random: random.movie_id }
     }
 

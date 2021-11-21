@@ -18,7 +18,12 @@ id="movie"
         <div class="poster col-12 col-md-6 col-lg-4 col-xl-5">
             <div class="crt">
                 <div class="screen">
+                    {{#if movie.poster_path}}
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" />
+                    {{else}}
+                    <img src="/img/default.jpg">
+                    {{/if}}
+
                 </div>
             </div>
         </div>
