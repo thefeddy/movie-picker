@@ -2,6 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import {
     HttpService,
     Injectable,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { Strategy } from 'passport-oauth2';
@@ -35,6 +36,12 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord')
             headers: { Authorization: `Bearer ${accessToken}` },
         }).toPromise();
 
-        return this.authService.validateUser(data.id);
+        const user = await this.authService.validateUser(data.id);
+
+        if (!user) {
+            throw new UnauthorizedException();
+        }
+
+        return user;
     }
 }

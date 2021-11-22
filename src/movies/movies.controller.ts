@@ -1,11 +1,11 @@
-import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put, HttpService, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Render, Res, Param, Patch, Put, HttpService, UseGuards, Req } from '@nestjs/common';
 
 
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 
 import { MovieService } from './movies.service';
-import { MoviesDTO, CreateMovieDTO, WatchedMovieDTO } from './movies.dto';
+import { MoviesDTO, CreateMovieDTO } from './movies.dto';
 import { LocalAuthGuard } from '../common/guards/local-auth.guard';
 
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
@@ -31,16 +31,17 @@ export class MoviesController {
             current: movies.data.page
         }
 
-        console.log(movies.data);
+
         return { movies: movies.data, search, pagination };
     }
 
-    @UseGuards(LocalAuthGuard)
+
     @Get('/trending')
     @Render('movies/trending')
-    async trending(@Res() res: Response): Promise<any> {
+    async trending(@Res() res: Response, @Req() request: Request): Promise<any> {
         const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
         const trending = await this.http.get(url).toPromise();
+
         return { trending: trending.data };
     }
 

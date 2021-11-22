@@ -5,6 +5,7 @@ import { join } from 'path';
 
 import * as exphbs from 'express-handlebars';
 import * as passport from 'passport';
+import * as session from 'express-session';
 
 import { AppModule } from './app.module';
 
@@ -59,6 +60,15 @@ async function bootstrap() {
 
     app.engine('hbs', hbs.engine);
     app.setViewEngine('hbs');
+
+    app.use(
+        session({
+            secret: 'LlbfMTe#Sf*L6',
+            resave: false,
+            saveUninitialized: false,
+            cookie: { maxAge: 36000 }
+        })
+    );
 
     app.use(passport.initialize());
     app.use(passport.session());

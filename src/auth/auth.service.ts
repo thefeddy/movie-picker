@@ -12,10 +12,7 @@ export class AuthService {
     }
 
     async validateUser(discord_id: string): Promise<any> {
-        const user = await this.usersService.findUser(discord_id);
-        if (user) {
-            return user;
-        }
-        return null;
+        console.log('discord validate')
+        return await this.usersService.findUser(discord_id);
     }
 }

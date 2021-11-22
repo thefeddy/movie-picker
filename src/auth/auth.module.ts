@@ -12,7 +12,7 @@ import { SessionSerializer } from './session.serializer';
 
 import { Users } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
-import { LocalStrategy } from './strategy/local.strategy';
+
 
 @Module({
     imports: [
