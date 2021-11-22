@@ -16,6 +16,10 @@ export class MoviesController {
     @Render('movies/index')
     async index(@Res() res: Response): Promise<any> { }
 
+    @Get('/')
+    @Render('users/register')
+    async register(@Res() res: Response): Promise<any> { }
+
     @Get('/search/:search/:page')
     @Render('movies/search')
     async search(@Param('search') search: string, @Param('page') page: string): Promise<any> {
@@ -26,7 +30,6 @@ export class MoviesController {
             current: movies.data.page
         }
 
-        console.log(movies.data);
         return { movies: movies.data, search, pagination };
     }
     @Get('/trending')
@@ -71,7 +74,7 @@ export class MoviesController {
         }
 
         const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, details, watched, streams: streaming.data.results.US };
-        console.log(response.data);
+
         return { movie };
     }
 
