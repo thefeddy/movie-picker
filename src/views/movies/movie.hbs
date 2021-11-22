@@ -13,46 +13,65 @@ id="movie"
 {{/extend}}
 
 {{#extend "body"}}
-<div class="container">
-    <div class="row justify-content-between">
-        <div class="poster col-12 col-md-6 col-lg-4 col-xl-5">
-            <div class="crt">
-                <div class="screen">
-                    {{#if movie.poster_path}}
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" />
-                    {{else}}
-                    <img src="/img/default.jpg">
-                    {{/if}}
+<header>
+    <div class="crt">
+        {{#if movie.backdrop_path}}
+        <img src="https://image.tmdb.org/t/p/original{{ movie.backdrop_path }}">
+        {{else}}
+        <img src="https://image.tmdb.org/t/p/original{{ movie.belongs_to_collection.backdrop_path }}">
+        {{/if}}
 
-                </div>
-            </div>
+        <div id="details">
+            <h1 title="{{ movie.original_title }}">{{ movie.title }}</h1>
+            <p> {{ movie.spoken_languages.0.english_name }} |
+                {{#each movie.genres }}{{ this.name }}{{#unless @last}}, {{/unless}}{{/each}} |
+                {{ movie.runtime }}m
+            </p>
         </div>
-        <div class="details col-12 col-md-10 col-lg-6  col-xl-5">
+        <div id="watch">
+            {{#if movie.details }}
+            {{#unless movie.watched }}
+            <a href="#" data-id="{{ movie.id }}" class="unwatched">unwatched</a>
+            {{/unless}}
+            {{else}}
+            <a href="#" data-id="{{ movie.id }}" data-title="{{ movie.title }}" class="add">Add to
+                list</a>
+            {{/if}}
+        </div>
+        <div id="watching">
+            {{#unless movie.watched }}
+            <div class="start-watching">Watching Movie?</div>
+            {{/unless}}
+        </div>
+        <div id="overlay"></div>
+    </div>
+    <div class="screen"></div>
+</header>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="details col-12 col-md-10 col-lg-6">
             <div class="row align-items-center">
-                <div class="col-9">
-                    <h1 title="{{ movie.original_title }}">{{ movie.title }}</h1>
-                    {{#if movie.watched }}
-                    {{#if movie.details.watched_on }}
-                    <span> Watched on {{ movie.details.watched_on }}</span>
-                    {{/if}}
-                    {{/if}}
-                </div>
-                <div class="col-3 status">
-                    {{#if movie.details }}
-                    {{#unless movie.watched }}
-                    <a href="#" data-id="{{ movie.id }}" class="unwatched">unwatched</a>
-                    {{/unless}}
-                    {{else}}
-                    <a href="#" data-id="{{ movie.id }}" data-title="{{ movie.title }}" class="add">Add to list</a>
-                    {{/if}}
+                <div class="col-12">
+                    <div class="status">
+                        {{#if movie.watched }}
+                        <ul class="genres">
+                            <li>Watched on </li>
+                            <li>{{ moment movie.details.watched_on  "MMMM Do, YYYY" }}</li>
+                        </ul>
+                        {{else}}
+                        <ul class="genres">
+                            <li>Added On</li>
+                            <li>{{ moment movie.details.added  "MMMM Do, YYYY" }}</li>
+                        </ul>
+                        {{/if}}
+                    </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <ul class="genres">
                         <li>Release Date</li>
-                        <li>{{ movie.release_date }}</li>
+                        <li>{{ moment movie.release_date  "MMMM Do, YYYY" }}</li>
                     </ul>
                 </div>
                 <div class="col-12">
@@ -63,18 +82,8 @@ id="movie"
                         {{/each}}
                     </ul>
                 </div>
-                {{#if movie.streams.flatrate }}
-                <div class="col-12 streams">
-                    <ul class="genres">
-                        <li>Streaming On</li>
-
-                        {{#each movie.streams.flatrate }}
-                        <li><img src="https://image.tmdb.org/t/p/original/{{ this.logo_path }}"></li>
-                        {{/each}}
-                    </ul>
-                </div>
-                {{/if}}
                 <div class="col-12">
+                    <h2>Cast</h2>
                     <ul class="scroll-section">
                         {{#each movie.cast }}
                         {{#if this.profile_path}}
@@ -92,6 +101,25 @@ id="movie"
                     </ul>
                 </div>
 
+                {{#if movie.streams.flatrate }}
+                <div class="col-12">
+                    <h2>Stream</h2>
+                    <ul class="scroll-section">
+                        {{#each movie.streams.flatrate}}
+                        <li>
+                            <a class="photo">
+                                <div class="details">
+                                    <div class="heading">{{ this.provider_name }}</div>
+
+                                </div>
+                                <img src="https://image.tmdb.org/t/p/w500/{{ this.logo_path }}">
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+
                 <p>{{ movie.overview }}</p>
 
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"
@@ -99,20 +127,68 @@ id="movie"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
 
-            </div>
+            </div>>
             <div class="row">
-                {{#unless movie.watched }}
-                <div class="start-watching">Watching Movie?</div>
-                {{/unless}}
-                {{!-- {{#if movie.homepage }}
-                <a href="{{ movie.homepage }}" class="homepage" target="_blank"><span>Streaming on</span> {{
-                    movie.homepage }}</a>
-                {{/if}} --}}
-            </div>
+                {{#if movie.streams.buy }}
+                <div class="col-12">
+                    <h2>Buy</h2>
+                    <ul class="scroll-section">
+                        {{#each movie.streams.buy}}
+                        <li>
+                            <a class="photo">
+                                <div class="details">
+                                    <div class="heading">{{ this.provider_name }}</div>
 
+                                </div>
+                                <img src="https://image.tmdb.org/t/p/w500/{{ this.logo_path }}">
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+
+                {{#if movie.streams.rent }}
+                <div class="col-12">
+                    <h2>Rent</h2>
+                    <ul class="scroll-section">
+                        {{#each movie.streams.rent}}
+                        <li>
+                            <a class="photo">
+                                <div class="details">
+                                    <div class="heading">{{ this.provider_name }}</div>
+
+                                </div>
+                                <img src="https://image.tmdb.org/t/p/w500/{{ this.logo_path }}">
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+
+                {{#if movie.streams.ads }}
+                <div class="col-12">
+                    <h2>Stream With Ads</h2>
+                    <ul class="scroll-section">
+                        {{#each movie.streams.ads}}
+                        <li>
+                            <a class="photo">
+                                <div class="details">
+                                    <div class="heading">{{ this.provider_name }}</div>
+
+                                </div>
+                                <img src="https://image.tmdb.org/t/p/w500/{{ this.logo_path }}">
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/if}}
+            </div>
         </div>
     </div>
-</div>
+</div> --}}
 {{/extend}}
 
 {{#extend "js"}}
@@ -210,17 +286,19 @@ id="movie"
 
         });
     }
+    if (document.querySelector('.start-watching')) {
+        document.querySelector('.start-watching').addEventListener('click', (event) => {
+            if (!isWatching) {
+                isWatching = true;
+                event.currentTarget.classList.add('watching');
+                event.currentTarget.innerHTML = 'Now Watching';
+                document.querySelector('.unwatched').innerHTML = 'watched';
+                movies.watching();
+                movies.watch();
+            }
 
-    document.querySelector('.start-watching').addEventListener('click', (event) => {
-        if (!isWatching) {
-            isWatching = true;
-            event.currentTarget.classList.add('watching');
-            event.currentTarget.innerHTML = 'Now Watching';
-            document.querySelector('.unwatched').innerHTML = 'watched';
-            movies.watching();
-            movies.watch();
-        }
+        });
+    }
 
-    });
 </script>
 {{/extend}}

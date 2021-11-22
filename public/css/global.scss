@@ -13,10 +13,10 @@ body {
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 8px;
-        background: #f3b6d5;
+        background: #2596be;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #f3b6d5;
+        background: #2596be;
     }
     h1 {
         font-family: 'Letterboard';
@@ -108,6 +108,16 @@ body {
                         margin-left: 5px;
                     }
                 }
+                .date {
+                    font-family: 'Raleway';
+                    font-size: 12px;
+                    font-weight: 600;
+
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+
+                    color: #2596be;
+                }
                 .rating {
                     text-align: right;
 
@@ -167,7 +177,7 @@ body {
 
         margin: 0 4px;
 
-        color: #f3b6d5;
+        color: #2596be;
     }
 }
 .scroll-section {
@@ -188,10 +198,10 @@ body {
     }
     &::-webkit-scrollbar-thumb {
         border-radius: 8px;
-        background: #f3b6d5;
+        background: #2596be;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #f3b6d5;
+        background: #2596be;
     }
     li {
         font-family: 'Letterboard';
@@ -216,7 +226,7 @@ body {
 
             cursor: pointer;
 
-            border-radius: 100%;
+            border-radius: 8px;
             &:hover {
                 .details {
                     visibility: visible;
@@ -241,7 +251,7 @@ body {
                 transition: all 550ms ease-in-out;
 
                 opacity: 0;
-                border-radius: 100%;
+                border-radius: 8px;
                 background: rgba(0,0,0,0.75);
 
                 align-items: center;
@@ -255,7 +265,7 @@ body {
 
                     text-align: center;
 
-                    color: #f3b6d5;
+                    color: #2596be;
                 }
                 .sub {
                     font-size: 12px;
@@ -297,7 +307,7 @@ body {
         color: #fff;
         &.current,
         &:hover {
-            color: #f3b6d5;
+            color: #2596be;
         }
     }
 }

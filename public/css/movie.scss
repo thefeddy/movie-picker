@@ -1,18 +1,144 @@
 #movie {
-    padding-top: 75px;
-
     background: #1e1e24;
-    h1 {
-        font-size: 35px;
 
-        margin: 0;
-        + span {
-            display: inline-block;
+    header {
+        position: relative;
 
-            margin: 5px 0;
+        height: 800px;
+        margin-top: 60px;
+        .crt {
+            position: absolute;
+            z-index: 2;
+            top: 2%;
+            left: 2%;
 
-            color: #fff;
+            overflow: hidden;
+
+            width: 96%;
+            height: 94%;
+
+            border: 16px solid;
+            border-top-color: #020202;
+            border-right-color: #080808;
+            border-bottom-color: #121212;
+            border-left-color: #080808;
+            border-radius: 32px;
+            background-color: transparent;
+            box-shadow: inset 0 0 18rem black,
+            inset 0 0 3rem black,
+            0 0 10rem black;
+            img {
+                position: absolute;
+
+                display: block;
+
+                width: 100%;
+                height: 100%;
+
+                object-fit: cover;
+            }
+            #details {
+                position: absolute;
+                z-index: 5;
+                bottom: 25px;
+                left: 50%;
+
+                width: 90%;
+
+                transform: translateX(-50%);
+                text-align: center;
+                h1 {
+                    font-size: 48px;
+
+                    margin: 0;
+
+                    letter-spacing: 5px;
+                }
+                p {
+                    margin: 0;
+                }
+            }
+            #watch {
+                position: absolute;
+                z-index: 5;
+                top: 25px;
+                right: 25px;
+
+                a {
+                    font-family: 'Letterboard';
+                    font-size: 20px;
+
+                    text-align: right;
+                    text-decoration: none;
+                    letter-spacing: 2px;
+
+                    color: #2596be;
+                }
+            }
+            #watching {
+                position: absolute;
+                z-index: 5;
+                right: 25px;
+                bottom: 25px;
+            }
+            #overlay {
+                position: absolute;
+                z-index: 3;
+                top: 0;
+                left: 0;
+
+                width: 100%;
+                height: 100%;
+
+                background-image: linear-gradient(to top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+            }
         }
+        .screen {
+            animation: textShadow 1.6s infinite;
+
+            &::before {
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+
+                display: block;
+
+                content: ' ';
+                pointer-events: none;
+
+                background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+                background-size: 100% 2px, 3px 100%;
+            }
+            &::after {
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+
+                display: block;
+
+                content: ' ';
+                animation: flicker 0.15s infinite;
+                pointer-events: none;
+
+                opacity: 0;
+                background: rgba(18, 16, 16, 0.1);
+            }
+        }
+    }
+
+    h2 {
+        font-family: 'Letterboard';
+        font-size: 32px;
+
+        margin: 10px 0 0 0;
+
+        color: #2596be;
     }
     i {
         font-size: 30px;
@@ -23,6 +149,8 @@
     }
     .poster {
         position: relative;
+
+        height: 660px;
         img {
             display: block;
 
@@ -108,7 +236,7 @@
         text-decoration: none;
         letter-spacing: 2px;
 
-        color: #080808;
+        color: #2596be;
         border-radius: 8px;
         &.watched {
             display: none;
@@ -119,19 +247,7 @@
             backdrop-filter: blur(4px);
         }
     }
-    .status {
-        text-align: right;
-        a {
-            font-family: 'Letterboard';
-            font-size: 20px;
 
-            text-align: right;
-            text-decoration: none;
-            letter-spacing: 2px;
-
-            color: #f3b6d5;
-        }
-    }
     p {
         font-size: 20px;
 
@@ -155,7 +271,7 @@
         li {
             margin-right: 10px;
 
-            color: #f3b6d5;
+            color: #2596be;
 
             &:first-child {
                 font-size: 18px;
@@ -185,7 +301,7 @@
         text-decoration: none;
         letter-spacing: 2px;
 
-        color: #f3b6d5;
+        color: #2596be;
         span {
             color: #fff;
         }

@@ -2,7 +2,7 @@
     main {
         margin-top: 125px;
         .total {
-            color: #f3b6d5;
+            color: #2596be;
         }
         .genres {
             display: flex;
@@ -38,7 +38,7 @@
                     transition: all 550ms ease-in-out;
                     &.selected,
                     &:hover {
-                        color: #f3b6d5;
+                        color: #2596be;
                         background: rgba(0, 0, 0, 0.90);
                     }
                 }

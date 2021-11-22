@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
 import * as exphbs from 'express-handlebars';
+import * as moment from 'moment';
 
 import { AppModule } from './app.module';
 
@@ -46,6 +47,9 @@ async function bootstrap() {
                 return options.fn(this);
             }
             return options.inverse(this);
+        },
+        moment: (date: string, format: string) => {
+            return moment(date).format(format);
         }
 
     };

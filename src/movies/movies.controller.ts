@@ -6,8 +6,6 @@ import { MovieService } from './movies.service';
 import { MoviesDTO, CreateMovieDTO, WatchedMovieDTO } from './movies.dto';
 
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-
-
 @Controller('')
 export class MoviesController {
     constructor(private movieService: MovieService, private http: HttpService) { }
@@ -21,7 +19,7 @@ export class MoviesController {
     @Get('/search/:search/:page')
     @Render('movies/search')
     async search(@Param('search') search: string, @Param('page') page: string): Promise<any> {
-        const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=${page}&include_adult=false`;
+        const url = `${process.env.TMDB_BASE_URL}search/movie?api_key=${process.env.TMDB_API_KEY}&language=en-US&query=${search}&page=${page}&include_adult=false`;
         const movies = await this.http.get(url).toPromise();
         const pagination = {
             total: movies.data.total_pages,
@@ -34,10 +32,11 @@ export class MoviesController {
     @Get('/trending')
     @Render('movies/trending')
     async trending(@Res() res: Response): Promise<any> {
-        const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
+        const url = `${process.env.TMDB_BASE_URL}trending/movie/day?api_key=${process.env.TMDB_API_KEY}`;
         const trending = await this.http.get(url).toPromise();
-        console.log(trending.data)
+
         return { trending: trending.data };
+
     }
 
     @Get('/random')
@@ -60,10 +59,10 @@ export class MoviesController {
     @Get('/movie/:id')
     @Render('movies/movie')
     async movie(@Param('id') id: number, @Res() res: Response): Promise<any> {
-        const response = await this.http.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
-        const trailer = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
-        const credits = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
-        const streaming = await this.http.get(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
+        const response = await this.http.get(`${process.env.TMDB_BASE_URL}movie/${id}?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
+        const trailer = await this.http.get(`${process.env.TMDB_BASE_URL}movie/${id}/videos?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
+        const credits = await this.http.get(`${process.env.TMDB_BASE_URL}movie/${id}/credits?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
+        const streaming = await this.http.get(`${process.env.TMDB_BASE_URL}movie/${id}/watch/providers?api_key=${process.env.TMDB_API_KEY}&language=en-US`).toPromise();
 
         const details = await this.movieService.findById(id);
         let watched;
@@ -71,9 +70,8 @@ export class MoviesController {
             watched = (details.watched == 0) ? false : true;
         }
 
-
         const movie = { ...response.data, ...trailer.data.results[0], ...credits.data, _id: id, details, watched, streams: streaming.data.results.US };
-
+        console.log(response.data);
         return { movie };
     }
 
