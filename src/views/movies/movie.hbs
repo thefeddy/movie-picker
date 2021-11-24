@@ -120,7 +120,7 @@ id="movie"
                 </div>
                 {{/if}}
 
-                <p>{{ movie.overview }}</p>
+                <p class="overview">{{ movie.overview }}</p>
 
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ movie.key }}"
                     title="YouTube video player" frameborder="0"
@@ -247,8 +247,8 @@ id="movie"
                 url: window.location.href,
                 movie_id: movie_id,
                 title: document.querySelector('h1').innerHTML,
-                poster: document.querySelector('.poster img').getAttribute('src'),
-                overview: document.querySelector('p').innerHTML
+                poster: document.querySelector('.crt img').getAttribute('src'),
+                overview: document.querySelector('.overview').innerHTML
             };
             fetch(`/watching/`, {
                 method: 'POST',

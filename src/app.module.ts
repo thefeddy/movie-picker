@@ -8,9 +8,11 @@ import { RouterModule, Routes } from 'nest-router';
 /* Modules */
 import { MoviesModule } from './movies/movies.module';
 import { ActorsModule } from './actors/actors.module';
-
 /* Entities */
 import { Movies } from './movies/movies.entity';
+
+/* Services */
+
 
 const routes: Routes = [
     {
@@ -44,7 +46,8 @@ const routes: Routes = [
         }),
         RouterModule.forRoutes(routes),
         MoviesModule,
-        ActorsModule
+        ActorsModule,
+
     ],
     controllers: [],
     providers: [],

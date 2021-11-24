@@ -98,21 +98,28 @@ export class MoviesController {
 
     @Post('/watching')
     async watching(@Body() movie: any): Promise<any> {
-        this.hook.setUsername('The Sperg Usher');
-        this.hook.setAvatar('https://images.squarespace-cdn.com/content/v1/5ea326bd59c52d46dc2bb35e/1593446964682-YPURHWC3MNR6G2ET32HB/ke17ZwdGBToddI8pDm48kEe_mcRrPi0owKsOEvri4DwUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2doZ2E4t9jBRCFFsxkL63Kq3EgCzpFZzMz_Zg0ELkfZg8CjLISwBs8eEdxAxTptZAUg/Movie+Ticket+Image.png?format=2500w');
+        this.hook.setUsername('Movie Watcher');
 
 
-        const embed = new MessageBuilder()
+        const embed = new MessageBuilder() // Mine
             .setTitle(`We are Currently watching : ${movie.title}`)
             .setURL(movie.url)
             .setColor('#00b0f4')
-            .setDescription(`${movie.overview}`)
+            .setDescription(`${movie.overview} -<@&841089593956892683>`)
+            .setImage(movie.poster)
+            .setTimestamp();
+
+        const embedTwo = new MessageBuilder() // Qs
+            .setTitle(`We are Currently watching : ${movie.title}`)
+            .setURL(movie.url)
+            .setColor('#00b0f4')
+            .setDescription(`${movie.overview} -<@&870739297832157184>`)
             .setImage(movie.poster)
             .setTimestamp();
 
 
         try {
-            Promise.all([this.hook.send(embed), this.secoond_Hook.send(embed)]);
+            Promise.all([this.hook.send(embed), this.secoond_Hook.send(embedTwo)]);
 
             return { status: 202, message: 'Web Hook Sent' };
         } catch (error) {
