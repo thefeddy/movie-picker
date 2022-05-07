@@ -25,9 +25,7 @@ export class Movies {
 
     @Column({
         name: 'watched',
-        type: 'varchar',
         nullable: true,
-        length: 255
     })
     watched: number;
 

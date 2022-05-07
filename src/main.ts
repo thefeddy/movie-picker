@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { join } from 'path';
 
 import * as exphbs from 'express-handlebars';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { AppModule } from './app.module';
 
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { env } from 'process';
 
 const PUBLIC_PATH = join(__dirname, '..', 'public');
 const VIEWS_PATH = join(__dirname, '..', 'src/views');
@@ -71,7 +72,19 @@ async function bootstrap() {
     });
 
     app.useGlobalFilters(new HttpExceptionFilter());
+    app.enableCors({
+        origin: ['http://localhost:3000'],
+        credentials: true,
+    });
+    const config = new DocumentBuilder()
+        .setTitle('Sperg Theatre')
+        .setDescription('Sperg Theatre API')
+        .setVersion('1.0')
+        .build();
 
-    await app.listen(3002);
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+
+    await app.listen(env.PORT);
 }
 bootstrap();

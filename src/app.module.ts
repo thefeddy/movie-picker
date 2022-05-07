@@ -8,8 +8,12 @@ import { RouterModule, Routes } from 'nest-router';
 /* Modules */
 import { MoviesModule } from './movies/movies.module';
 import { ActorsModule } from './actors/actors.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+
 /* Entities */
 import { Movies } from './movies/movies.entity';
+import { Users } from './users/users.entity';
 
 /* Services */
 
@@ -20,8 +24,12 @@ const routes: Routes = [
         module: MoviesModule,
     },
     {
-        path: '/actors',
+        path: '/actor',
         module: ActorsModule,
+    },
+    {
+        path: '/auth',
+        module: AuthModule,
     },
 ];
 
@@ -40,13 +48,15 @@ const routes: Routes = [
                 username: process.env.TYPEORM_USERNAME,
                 password: process.env.TYPEORM_PASSWORD,
                 database: process.env.TYPEORM_DATABASE,
-                entities: [Movies],
+                entities: [Movies, Users],
                 synchronize: true,
             }),
         }),
         RouterModule.forRoutes(routes),
         MoviesModule,
         ActorsModule,
+        AuthModule,
+        UsersModule
 
     ],
     controllers: [],
