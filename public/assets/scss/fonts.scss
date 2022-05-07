@@ -1,0 +1,22 @@
+$font-path: './assets/fonts/' !default;
+$fa-font-path: '/assets/fonts/fontawesome';
+
+@import 'fontawesome/fontawesome';
+@import 'fontawesome/regular';
+@import 'fontawesome/solid';
+@import 'fontawesome/light';
+@import 'fontawesome/brands';
+@import 'fontawesome/duotone';
+
+
+@font-face {
+    font-family: 'Letterboard';
+    font-weight: normal;
+    font-style: normal;
+
+    font-display: swap;
+    src: url('/assets/fonts/letterboard/letterboard.woff2') format('woff2'),;
+}
+
+
+

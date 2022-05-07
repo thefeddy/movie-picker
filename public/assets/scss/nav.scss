@@ -1,0 +1,62 @@
+nav {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+
+    display: flex;
+
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 20px 0;
+
+    transition: all 550ms ease-in-out;
+    text-align: right;
+
+    justify-content: flex-end;
+
+
+    &.sticky {
+        background: rgba(0,0,0,0.5);
+
+        backdrop-filter: blur(4px);
+    }
+    a {
+        font-family: 'Letterboard';
+        font-size: 20px;
+        font-weight: 700;
+
+        margin-right: 25px;
+
+        cursor: pointer;
+        transition: opacity 550ms ease-in-out;
+        text-decoration: none;
+        letter-spacing: 2px;
+
+        opacity: 0.80;
+        color: #fff;
+        &:hover {
+            opacity: 1;
+            color: #fff;
+        }
+        &.active {
+            opacity: 1;
+            color: #2596be;
+        }
+    }
+}
+
+#nav-container-top {
+    position: absolute;
+
+    min-width: 1px;
+    min-height: 1px;
+
+    pointer-events: none;
+
+    background-color: transparent;
+}
+@media(max-width:767px) {
+    nav {
+        display: none;
+    }
+}

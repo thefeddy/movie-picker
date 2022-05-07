@@ -1,4 +1,4 @@
-import { User } from "discord.js";
+// import { User } from "discord.js";
 
 
 export type UserDetails = {
@@ -10,4 +10,4 @@ export type UserDetails = {
     refreshToken: string;
 };
 
-export type Done = (err: Error, user: User) => void;
+export type Done = (err: Error, user: any) => void;
